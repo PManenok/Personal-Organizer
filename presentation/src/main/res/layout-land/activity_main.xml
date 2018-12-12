@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.gmail.pmanenok.personalorganizer.presentation.screen.main.MainViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/main_top_bar_include"
+            layout="@layout/include_main_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.gmail.pmanenok.personalorganizer.presentation.views.TabLinearLayout
+            android:id="@+id/main_tab_linear_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:minWidth="?attr/actionBarSize"
+            android:orientation="vertical"
+            app:linearTabTextSize="15sp"
+            app:linearTabTextGravity="center"
+            app:linearTabSelectedTextColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/main_view_pager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/main_top_bar_include" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/main_view_pager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/main_tab_linear_layout"
+            app:layout_constraintTop_toBottomOf="@id/main_top_bar_include">
+
+        </android.support.v4.view.ViewPager>
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

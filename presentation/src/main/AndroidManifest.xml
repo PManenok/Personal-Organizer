@@ -1,0 +1,29 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools" package="com.gmail.pmanenok.personalorganizer">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application android:allowBackup="true"
+                 android:label="@string/app_name"
+                 android:name=".app.App"
+                 android:icon="@mipmap/ic_launcher"
+                 android:roundIcon="@mipmap/ic_launcher_round"
+                 android:supportsRtl="true"
+                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                 tools:ignore="GoogleAppIndexingWarning">
+
+        <activity android:name=".presentation.screen.main.MainActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".presentation.screen.note.NoteActivity"/>
+        <activity android:name=".presentation.screen.search.SearchActivity"/>
+        <activity android:name=".presentation.screen.settings.SettingsActivity"/>
+
+        <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="6d86187eec22c090016341351ee6c887ac458994"/>
+    </application>
+
+</manifest>

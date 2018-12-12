@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+                name="item"
+                type="com.gmail.pmanenok.personalorganizer.presentation.screen.main.day.binding.NoteItemViewModel"/>
+
+    </data>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <TextView
+                style="@style/ItemTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{item.type}"/>
+
+        <TextView
+                style="@style/ItemTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{item.title}"/>
+
+        <TextView
+                style="@style/ItemTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{item.comment}"/>
+    </LinearLayout>
+
+
+</layout>

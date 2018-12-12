@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TabLinearLayout">
+        <attr name="linearTabTextSize" format="dimension" />
+        <attr name="linearTabSelectedTextColor" format="color" />
+        <attr name="linearTabTextGravity" format="integer">
+            <flag name="bottom" value="80" />
+            <flag name="center" value="17" />
+            <flag name="center_horizontal" value="1" />
+            <flag name="center_vertical" value="16" />
+            <flag name="clip_horizontal" value="8" />
+            <flag name="clip_vertical" value="128" />
+            <flag name="end" value="8388613" />
+            <flag name="fill" value="119" />
+            <flag name="fill_horizontal" value="7" />
+            <flag name="fill_vertical" value="112" />
+            <flag name="left" value="3" />
+            <flag name="right" value="5" />
+            <flag name="start" value="8388611" />
+            <flag name="top" value="48" />
+            <!--<flag name="bottom" value="50" />
+            <flag name="center" value="11" />
+            <flag name="center_horizontal" value="1" />
+            <flag name="center_vertical" value="10" />
+            <flag name="clip_horizontal" value="8" />
+            <flag name="clip_vertical" value="80" />
+            <flag name="end" value="800005" />
+            <flag name="fill" value="77" />
+            <flag name="fill_horizontal" value="7" />
+            <flag name="fill_vertical" value="70" />
+            <flag name="left" value="3" />
+            <flag name="right" value="5" />
+            <flag name="start" value="800003" />
+            <flag name="top" value="30" />-->
+        </attr>
+    </declare-styleable>
+</resources>

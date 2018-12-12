@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574b</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <!--<color name="min_opacity">#00ffffff</color>-->
+
+
+    <!-- My app colors -->
+    <color name="black">#000000</color>
+    <color name="darkGrey">#4d4d4d</color>
+    <color name="grey">#a79d9d</color>
+    <color name="lightGrey">#cfcfcf</color>
+    <color name="lightestGrey">#eaeaea</color>
+    <color name="white">#ffffff</color>
+    <color name="red">#ff262a</color>
+    <color name="darkRed">#cf0004</color>
+    <color name="blue">#0000ff</color>
+    <color name="darkBlue">#000091</color>
+    <color name="lightViolet">#cd87ff</color>
+    <color name="violet">#8304c2</color>
+    <color name="violet_background_match">#670499</color>
+    <color name="paleLightGreen">#73e664</color>
+    <color name="lightGreen">#3dff23</color>
+    <color name="green">#17e100</color>
+    <color name="green_background_match">#11ab00</color>
+    <color name="darkGreen">#109e00</color>
+    <color name="yellow">#ffe100</color>
+    <color name="orange">#ffa600</color>
+</resources>

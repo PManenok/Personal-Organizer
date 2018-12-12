@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent">
+
+    <include
+            android:id="@+id/month_title_tab_include"
+            layout="@layout/include_calendar_month_title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/week_titles_include"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <include
+            android:id="@+id/week_titles_include"
+            layout="@layout/include_calendar_week_days_titles_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/week_1_include"
+            app:layout_constraintTop_toBottomOf="@id/month_title"/>
+
+    <include
+            android:id="@+id/week_1_include"
+            layout="@layout/include_calendar_week_days_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/week_2_include"
+            app:layout_constraintTop_toBottomOf="@id/week_titles_include"/>
+
+    <include
+            android:id="@+id/week_2_include"
+            layout="@layout/include_calendar_week_days_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/week_3_include"
+            app:layout_constraintTop_toBottomOf="@+id/week_1_include"/>
+
+    <include
+            android:id="@+id/week_3_include"
+            layout="@layout/include_calendar_week_days_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/week_4_include"
+            app:layout_constraintTop_toBottomOf="@+id/week_2_include"/>
+
+    <include
+            android:id="@+id/week_4_include"
+            layout="@layout/include_calendar_week_days_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/week_5_include"
+            app:layout_constraintTop_toBottomOf="@+id/week_3_include"/>
+
+    <include
+            android:id="@+id/week_5_include"
+            layout="@layout/include_calendar_week_days_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/week_6_include"
+            app:layout_constraintTop_toBottomOf="@+id/week_4_include"/>
+
+    <include
+            android:id="@+id/week_6_include"
+            layout="@layout/include_calendar_week_days_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/week_5_include"/>
+</android.support.constraint.ConstraintLayout>
