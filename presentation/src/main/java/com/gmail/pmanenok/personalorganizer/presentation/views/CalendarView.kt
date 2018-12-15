@@ -330,7 +330,9 @@ class CalendarView : GridLayout {
         }
 
         fun setItems(items: MutableMap<Long, List<Int>>) {
+            itemList.clear()
             itemList.putAll(items)
+            Log.e("NoteAdapter setItems", "dataChanged $itemList")
             Log.e("NoteAdapter setItems", "dataChanged ${calendarView?.get()?.dataChanged}")
             calendarView?.get()?.dataChanged = true
         }

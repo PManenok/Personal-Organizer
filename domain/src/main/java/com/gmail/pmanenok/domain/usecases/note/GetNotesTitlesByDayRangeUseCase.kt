@@ -6,13 +6,13 @@ import com.gmail.pmanenok.domain.repositories.NoteRepository
 import io.reactivex.Flowable
 import javax.inject.Inject
 
-class GetNoteUseCase @Inject constructor(
+class GetNotesTitlesByDayRangeUseCase @Inject constructor(
     postExecutorThread: PostExecutorThread,
     private val repository: NoteRepository
 ) : BaseUseCase(postExecutorThread) {
 
-    fun getById(id: String): Flowable<Note> {
-        return repository.getById(id)
+    fun getByDay(idBegin: Long, idEnd: Long): Flowable<List<Pair<Long, List<String>>>> {
+        return repository.getByDayRange(idBegin, idEnd)
             .observeOn(postExecutorThread)
             .subscribeOn(workExecutorThread)
     }

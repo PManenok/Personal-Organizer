@@ -12,52 +12,37 @@ import io.reactivex.Flowable
 interface NoteDao {
 
     @Query("SELECT day , title FROM record WHERE day BETWEEN :dayFirst AND :dayLast")
-    fun getByDayRange(dayFirst: Long, dayLast: Long): Flowable<List<DayNoteTitleDb>>
+    fun getByDayRange(dayFirst: Long, dayLast: Long): Flowable<List<DayRecordTitleDb>>
+
+    @Query("SELECT type, day FROM record")
+    fun getAllNoteType(): Flowable<List<TypedRecordDb>>
+
+    @Query("SELECT type, day FROM record WHERE day >= :dayFirst AND day <= :dayLast")
+    fun getNoteTypeByDayRange(dayFirst: Long, dayLast: Long): Flowable<List<TypedRecordDb>>
+
+    @Query("SELECT * FROM record WHERE day = :day")
+    fun getByDay(day: Long): Flowable<List<RecordDb>>
 
 
-    /*@Insert
-    fun insert(notes: List<RecordDb>)
-
-    @Update
-    fun update(note: RecordDb)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(note: RecordDb)
-clearAllTables()
-    @Delete
-    fun delete(note: RecordDb)*/
-
-    /*@Query("DELETE FROM record, note, list, birthday WHERE id = :id")
-    fun deleteById(id: String)*/
-
-
-    /*@Query("DELETE FROM note")
-    fun deleteAll()*/
-
-    @Query("SELECT * FROM note")
-    fun getAll(): Flowable<List<NoteDb>>
-
-    @Query("SELECT record.id, record.type, record.day, record.comment, record.title, note.textNote AS department_name FROM record, note WHERE note_info_id as :id LIMIT 1")
+    @Query("SELECT record.id, record.type, record.day, record.comment, record.title, note.textNote FROM record, note WHERE record.id = :id AND note.id = :id LIMIT 1")
     fun getNoteById(id: String): Flowable<NoteRecord>
 
-    @Query("SELECT * FROM note WHERE id = :id LIMIT 1")
-    fun getListById(id: String): Flowable<ListDb>
+    @Query("SELECT record.id, record.type, record.day, record.comment, record.title, list.list FROM record, list WHERE record.id = :id AND list.id = :id LIMIT 1")
+    fun getListById(id: String): Flowable<ListRecord>
 
-    @Query("SELECT * FROM note WHERE id = :id LIMIT 1")
-    fun getBirthdayById(id: String): Flowable<BirthdayDb>
+    @Query("SELECT record.id, record.type, record.day, record.comment, record.title, birthday.birthDate, birthday.name FROM record, birthday WHERE record.id = :id AND birthday.id = :id LIMIT 1")
+    fun getBirthdayById(id: String): Flowable<BirthdayRecord>
 
-    @Query("SELECT * FROM note WHERE day = :day")
-    fun getByDay(day: Long): Flowable<List<NoteDb>>
+
+    /*
+    @Query("SELECT * FROM note")
+    fun getAll(): Flowable<List<NoteDb>>
 
     @Query("SELECT * FROM note WHERE day > :day")
     fun getAllAfterDay(day: Long): Flowable<List<NoteDb>>
 
     @Query("SELECT * FROM note WHERE day < :day")
-    fun getAllBeforeDay(day: Long): Flowable<List<NoteDb>>
+    fun getAllBeforeDay(day: Long): Flowable<List<NoteDb>>*/
 
-    @Query("SELECT type, day FROM note")
-    fun getAllNoteType(): Flowable<List<TypedNoteDb>>
 
-    @Query("SELECT type, day FROM note WHERE day >= :dayFirst AND day <= :dayLast")
-    fun getNoteTypeByDayRange(dayFirst: Long, dayLast: Long): Flowable<List<TypedNoteDb>>
 }

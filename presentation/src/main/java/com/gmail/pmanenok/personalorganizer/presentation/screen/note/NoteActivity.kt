@@ -36,20 +36,20 @@ class NoteActivity : BaseMvvmActivity<NoteViewModel, NoteRouter, ActivityNoteBin
         if (noteMode == OLD_NOTE) {
             id = intent.getStringExtra(NOTE_ID_EXTRA)
         }
-              when (noteType) {
-                  NoteType.TYPE_NOTE -> {
-                      router.goToNoteRecord(id)
-                  }
-                  NoteType.TYPE_LIST -> {
-                      router.goToListRecord(id)
-                  }
-                  NoteType.TYPE_BIRTHDAY -> {
-                      router.goToBirthdayRecord(id)
-                  }
-                  else -> {
-                      router.goBack()
-                  }
-              }
+        when (noteType) {
+            NoteType.TYPE_NOTE -> {
+                router.goToNoteRecord(id)
+            }
+            NoteType.TYPE_LIST -> {
+                router.goToListRecord(id)
+            }
+            NoteType.TYPE_BIRTHDAY -> {
+                router.goToBirthdayRecord(id)
+            }
+            else -> {
+                router.goBack()
+            }
+        }
 
     }
 }

@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.gmail.pmanenok.data.db.dao.NoteDao
+import com.gmail.pmanenok.data.db.dao.NoteDaoTransactions
 import com.gmail.pmanenok.data.db.entity.db.BirthdayDb
 import com.gmail.pmanenok.data.db.entity.db.ListDb
 import com.gmail.pmanenok.data.db.entity.db.NoteDb
@@ -26,4 +27,5 @@ abstract class AppDataBase : RoomDatabase() {
     }
 
     abstract fun getNoteDao(): NoteDao
+    abstract fun getNoteDaoTransactions(): NoteDaoTransactions
 }

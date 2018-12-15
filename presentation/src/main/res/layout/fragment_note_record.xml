@@ -18,37 +18,22 @@
         <include
             android:id="@+id/note_top_bar_include"
             layout="@layout/include_note_top_bar"
-            app:layout_constraintBottom_toTopOf="@id/comment_lined_et"
+            app:layout_constraintBottom_toTopOf="@id/birthday_comment_lined_et"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            bind:includeNoteTopBarBind="@{viewModel}" />
-
-        <!--<EditText
-            android:id="@+id/record_title_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="auto"
-            android:focusableInTouchMode="true"
-            android:hint="@string/default_record_title"
-            android:inputType="text"
-            android:lines="1"
-            android:maxLines="1"
-            android:scrollHorizontally="true"
-            android:text="@{viewModel.title != `title` ? viewModel.title : null}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />-->
+            bind:titleView="@={viewModel.title}" />
 
         <com.gmail.pmanenok.personalorganizer.presentation.views.LinedEditText
-            android:id="@+id/comment_lined_et"
+            android:id="@+id/birthday_comment_lined_et"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/transparent"
             android:ems="10"
             android:gravity="top"
-            android:inputType="textMultiLine"
+            android:inputType="textMultiLine|text|textAutoCorrect|textCapSentences"
             android:padding="5dp"
-            android:text="@{viewModel.comment != `comment` ? viewModel.comment : null}"
+            android:text="@={viewModel.textNote}"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

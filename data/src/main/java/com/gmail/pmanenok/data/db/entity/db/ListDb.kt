@@ -8,5 +8,5 @@ import android.arch.persistence.room.PrimaryKey
 data class ListDb(
     @PrimaryKey
     val id: String,
-    val list: List<String>
+    val list: String
 )

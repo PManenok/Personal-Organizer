@@ -7,5 +7,6 @@ class List(
     date: Long,
     type: NoteType,
     title: String,
+    comment: String,
     val list: List<String>
-) : BaseNote(id, date, type, title)
+) : Record(id, date, type, title, comment)

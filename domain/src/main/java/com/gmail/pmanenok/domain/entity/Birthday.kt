@@ -5,6 +5,7 @@ class Birthday(
     date: Long,
     type: NoteType,
     title: String,
+    comment: String,
     val name: String,
     val birthDate: Long
-) : BaseNote(id, date, type, title)
+) : Record(id, date, type, title, comment)

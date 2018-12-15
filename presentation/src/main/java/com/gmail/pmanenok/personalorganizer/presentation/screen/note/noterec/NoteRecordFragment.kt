@@ -33,14 +33,13 @@ class NoteRecordFragment : BaseMvvmFragment<NoteRecordViewModel, NoteRouter, Fra
 
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val id = arguments?.getString(NOTE_ID_EXTRA) ?: NOTE_ID_EXTRA
+        binding.noteTopBarInclude.noteTopBarBackBtn.setOnClickListener(viewModel.backOnClick)
+        binding.noteTopBarInclude.noteTopBarNotifyBtn.setOnClickListener(viewModel.notifyOnClick)
         if (id != NOTE_ID_EXTRA) {
-
+            viewModel.setRecordId(id)
         }
     }
-
-
 }

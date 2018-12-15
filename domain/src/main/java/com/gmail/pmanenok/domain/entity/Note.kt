@@ -1,9 +1,10 @@
 package com.gmail.pmanenok.domain.entity
 
-data class Note(
-    val id: String,
-    val date: Long,
-    val type: NoteType,
-    val title: String,
-    val comment: String
-) : DomainEntity
+class Note(
+    id: String,
+    date: Long,
+    type: NoteType,
+    title: String,
+    comment: String,
+    val textNote: String
+) : Record(id, date, type, title, comment)

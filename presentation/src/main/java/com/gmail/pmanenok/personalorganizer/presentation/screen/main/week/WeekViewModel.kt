@@ -3,7 +3,7 @@ package com.gmail.pmanenok.personalorganizer.presentation.screen.main.week
 import android.databinding.ObservableField
 import com.gmail.pmanenok.domain.usecases.date.GetSelectedDayUseCase
 import com.gmail.pmanenok.domain.usecases.date.UpdateSelectedDayUseCase
-import com.gmail.pmanenok.domain.usecases.note.GetNotesByDayRangeUseCase
+import com.gmail.pmanenok.domain.usecases.note.GetNotesTitlesByDayRangeUseCase
 import com.gmail.pmanenok.personalorganizer.app.App
 import com.gmail.pmanenok.personalorganizer.presentation.base.BaseViewModel
 import com.gmail.pmanenok.personalorganizer.presentation.screen.main.MainRouter
@@ -21,11 +21,23 @@ class WeekViewModel : BaseViewModel<MainRouter>() {
     var selectedDay: Long = 0L
     var weekBeginDay: Long = 0L
     var weekEndDay: Long = 0L
+        set(value) {
+            field = value
+            addToDisposable(getNotesTitlesByDayRangeUseCase.getByDay(weekBeginDay, weekEndDay).subscribeBy(
+                onNext = {
+                    adapter.cleanItems()
+                    adapter.addItems(it)
+                },
+                onError = {
+                    router?.showError(it)
+                }
+            ))
+        }
 
     @Inject
     public lateinit var updateSelectedDayUseCase: UpdateSelectedDayUseCase
     @Inject
-    public lateinit var getNotesByDayRangeUseCase: GetNotesByDayRangeUseCase
+    public lateinit var getNotesTitlesByDayRangeUseCase: GetNotesTitlesByDayRangeUseCase
     @Inject
     public lateinit var getSelectedDayUseCase: GetSelectedDayUseCase
 
@@ -60,14 +72,15 @@ class WeekViewModel : BaseViewModel<MainRouter>() {
                 router?.showError(it)
             }
         ))
-        addToDisposable(getNotesByDayRangeUseCase.getByDay(weekBeginDay, weekEndDay).subscribeBy(
-            onNext = {
-                adapter.cleanItems()
-                adapter.addItems(it)
-            },
-            onError = {
-                router?.showError(it)
-            }
-        ))
+        if (weekBeginDay != 0L && weekEndDay != 0L)
+            addToDisposable(getNotesTitlesByDayRangeUseCase.getByDay(weekBeginDay, weekEndDay).subscribeBy(
+                onNext = {
+                    adapter.cleanItems()
+                    adapter.addItems(it)
+                },
+                onError = {
+                    router?.showError(it)
+                }
+            ))
     }
 }

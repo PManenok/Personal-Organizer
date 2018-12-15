@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.PopupMenu
+import android.util.Log
 import com.gmail.pmanenok.personalorganizer.R
 import com.gmail.pmanenok.personalorganizer.databinding.ActivityMainBinding
 import com.gmail.pmanenok.personalorganizer.presentation.base.BaseMvvmActivity
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.include_main_top_bar.*
 import android.view.View
 import android.widget.ImageButton
 import com.gmail.pmanenok.personalorganizer.presentation.screen.main.week.WeekFragment
+import java.util.*
 
 class MainActivity : BaseMvvmActivity<MainViewModel, MainRouter, ActivityMainBinding>() {
     companion object {
@@ -50,23 +52,23 @@ class MainActivity : BaseMvvmActivity<MainViewModel, MainRouter, ActivityMainBin
         // The pager adapter, which provides the pages to the view pager widget.
         val adapter = MainViewPagerAdapter(this, supportFragmentManager)
         adapter.addPage(
-            MonthFragment.getInstance(),
+            MonthFragment(),
             resources.getString(R.string.pager_month).toUpperCase(),
             R.drawable.ic_month_30dp
         )
         adapter.addPage(
-            WeekFragment.getInstance(viewModel.today),
+            WeekFragment(),
             resources.getString(R.string.pager_week).toUpperCase(),
             R.drawable.ic_week_30dp
         )
         adapter.addPage(
-            DayFragment.getInstance(viewModel.today),
+            DayFragment(),
             resources.getString(R.string.pager_day).toUpperCase(),
             R.drawable.ic_day_30dp
         )
         pagesCount = adapter.count
         viewPager.adapter = adapter
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        /*viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
             }
 
@@ -80,7 +82,7 @@ class MainActivity : BaseMvvmActivity<MainViewModel, MainRouter, ActivityMainBin
                     adapter.getItem(position).onResume()
                 }
             }
-        })
+        })*/
 
         if (portrait) main_tab_layout.setupWithViewPager(viewPager)
         else main_tab_linear_layout.setupWithViewPager(viewPager)

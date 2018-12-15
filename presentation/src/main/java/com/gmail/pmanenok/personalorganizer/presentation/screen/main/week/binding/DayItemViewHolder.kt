@@ -8,7 +8,7 @@ import com.gmail.pmanenok.personalorganizer.databinding.ItemNoteListBinding
 import com.gmail.pmanenok.personalorganizer.presentation.base.recycler.BaseViewHolder
 
 class DayItemViewHolder(binding: ItemDayListBinding, viewModel: DayItemViewModel) :
-    BaseViewHolder<Pair<Long, List<Note>>, DayItemViewModel, ItemDayListBinding>(binding, viewModel) {
+    BaseViewHolder<Pair<Long, List<String>>, DayItemViewModel, ItemDayListBinding>(binding, viewModel) {
     companion object {
         fun create(parent: ViewGroup, viewModel: DayItemViewModel): DayItemViewHolder {
             val binding = ItemDayListBinding.inflate(LayoutInflater.from(parent.context), parent, false)

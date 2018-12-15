@@ -18,41 +18,77 @@
         <include
             android:id="@+id/note_top_bar_include"
             layout="@layout/include_note_top_bar"
-            app:layout_constraintBottom_toTopOf="@id/comment_lined_et"
+            app:layout_constraintBottom_toTopOf="@id/birthday_name_et"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            bind:includeNoteTopBarBind="@{viewModel}" />
+            bind:titleView="@={viewModel.title}" />
 
-        <!--<EditText
-            android:id="@+id/record_title_et"
+        <EditText
+            android:id="@+id/birthday_name_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="auto"
-            android:focusableInTouchMode="true"
-            android:hint="@string/default_record_title"
-            android:inputType="text"
-            android:lines="1"
-            android:maxLines="1"
-            android:scrollHorizontally="true"
-            android:text="@{viewModel.title != `title` ? viewModel.title : null}"
+            android:ems="10"
+            android:hint="@string/hint_birthday_name"
+            android:inputType="textPersonName|textCapWords"
+            android:text="@={viewModel.name}"
+            app:layout_constraintBottom_toTopOf="@id/birthday_date_et"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />-->
+            app:layout_constraintTop_toBottomOf="@id/note_top_bar_include" />
+
+        <EditText
+            android:id="@+id/birthday_date_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/hint_birthday_date"
+            android:inputType="datetime"
+            android:text="@={viewModel.date}"
+            app:layout_constraintBottom_toTopOf="@id/birthday_comment_lined_et"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/birthday_name_et" />
 
         <com.gmail.pmanenok.personalorganizer.presentation.views.LinedEditText
-            android:id="@+id/comment_lined_et"
+            android:id="@+id/birthday_comment_lined_et"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             android:background="@color/transparent"
             android:ems="10"
             android:gravity="top"
-            android:inputType="textMultiLine"
+            android:hint="@string/hint_birthday_comment"
+            android:inputType="textMultiLine|text|textAutoCorrect|textCapSentences"
+            android:maxLines="10"
             android:padding="5dp"
-            android:text="@{viewModel.comment != `comment` ? viewModel.comment : null}"
+            android:text="@={viewModel.comment}"
             android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/birthday_email_et"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/birthday_date_et" />
+
+        <EditText
+            android:id="@+id/birthday_email_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/hint_birthday_email"
+            android:inputType="textEmailAddress"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/birthday_phone_et"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/birthday_comment_lined_et" />
+
+        <EditText
+            android:id="@+id/birthday_phone_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/hint_birthday_phone"
+            android:inputType="phone"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/note_top_bar_include" />
+            app:layout_constraintTop_toBottomOf="@+id/birthday_email_et" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

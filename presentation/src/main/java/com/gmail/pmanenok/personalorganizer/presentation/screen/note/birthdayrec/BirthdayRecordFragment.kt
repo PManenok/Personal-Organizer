@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.View
 import com.gmail.pmanenok.personalorganizer.R
 import com.gmail.pmanenok.personalorganizer.databinding.FragmentBirthdayRecordBinding
-import com.gmail.pmanenok.personalorganizer.databinding.FragmentMonthBinding
 import com.gmail.pmanenok.personalorganizer.presentation.base.BaseMvvmFragment
 import com.gmail.pmanenok.personalorganizer.presentation.screen.note.NoteRouter
+import com.gmail.pmanenok.personalorganizer.presentation.screen.note.listrec.ListRecordFragment
 
 
 class BirthdayRecordFragment : BaseMvvmFragment<BirthdayRecordViewModel, NoteRouter, FragmentBirthdayRecordBinding>() {
@@ -22,6 +22,7 @@ class BirthdayRecordFragment : BaseMvvmFragment<BirthdayRecordViewModel, NoteRou
             return fragment
         }
     }
+
     override fun prodiveViewModel(): BirthdayRecordViewModel {
         return ViewModelProviders.of(this).get(BirthdayRecordViewModel::class.java)
     }
@@ -37,9 +38,14 @@ class BirthdayRecordFragment : BaseMvvmFragment<BirthdayRecordViewModel, NoteRou
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val id = arguments?.getString(NOTE_ID_EXTRA) ?: NOTE_ID_EXTRA
-        if (id == NOTE_ID_EXTRA){
-
+        if (id != NOTE_ID_EXTRA) {
+            //binding.noteTopBarInclude.imageButton.setOnClickListener(viewModel.backOnClick)
+            //            binding.noteTopBarInclude.imageButton2.setOnClickListener(viewModel.notifyOnClick)
+            //viewModel.setRecordId(id)
+        } else {
+            //router?.goBack()
         }
+        router?.goBack()
 
     }
 

@@ -21,6 +21,7 @@ class ListRecordFragment : BaseMvvmFragment<ListRecordViewModel, NoteRouter, Fra
             return fragment
         }
     }
+
     override fun prodiveViewModel(): ListRecordViewModel {
         return ViewModelProviders.of(this).get(ListRecordViewModel::class.java)
     }
@@ -36,9 +37,14 @@ class ListRecordFragment : BaseMvvmFragment<ListRecordViewModel, NoteRouter, Fra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val id = arguments?.getString(NOTE_ID_EXTRA) ?: NOTE_ID_EXTRA
-        if (id == NOTE_ID_EXTRA){
-
+        if (id != NOTE_ID_EXTRA) {
+            //binding.noteTopBarInclude.imageButton.setOnClickListener(viewModel.backOnClick)
+            //            binding.noteTopBarInclude.imageButton2.setOnClickListener(viewModel.notifyOnClick)
+            //viewModel.setRecordId(id)
+        } else {
+            //router?.goBack()
         }
+        router?.goBack()
     }
 
 }

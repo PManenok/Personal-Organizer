@@ -6,7 +6,7 @@
 
         <variable
                 name="item"
-                type="com.gmail.pmanenok.personalorganizer.presentation.screen.main.day.binding.NoteItemViewModel"/>
+                type="com.gmail.pmanenok.personalorganizer.presentation.screen.main.day.binding.RecordItemViewModel"/>
 
     </data>
 

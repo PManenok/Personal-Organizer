@@ -9,5 +9,4 @@ class NoteViewModel : BaseViewModel<NoteRouter>() {
     val title = ObservableField<String>("title")
     val comment = ObservableField<String>("comment")
     val notify = ObservableBoolean(false)
-
 }

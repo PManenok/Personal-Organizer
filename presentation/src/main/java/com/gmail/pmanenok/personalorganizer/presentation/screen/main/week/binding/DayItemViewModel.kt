@@ -6,12 +6,12 @@ import com.gmail.pmanenok.domain.entity.Note
 import com.gmail.pmanenok.personalorganizer.presentation.base.recycler.BaseItemViewModel
 import java.lang.StringBuilder
 
-class DayItemViewModel : BaseItemViewModel<Pair<Long, List<Note>>>() {
+class DayItemViewModel : BaseItemViewModel<Pair<Long, List<String>>>() {
     val weekDayTitle = ObservableField<String>("weekDayTitle")
     var id: Long = 0L
     val notesTitles = ObservableField<String>("title")
 
-    override fun bindItem(item: Pair<Long, List<Note>>, position: Int) {
+    override fun bindItem(item: Pair<Long, List<String>>, position: Int) {
         weekDayTitle.set(DateFormat.format("E\nd", item.first).toString().toUpperCase())
         id = item.first
         val stringBuilder = StringBuilder()
@@ -19,7 +19,7 @@ class DayItemViewModel : BaseItemViewModel<Pair<Long, List<Note>>>() {
         var itemsCount = 0
         for (entity in item.second) {
             itemsCount++
-            stringBuilder.append(entity.title)
+            stringBuilder.append(entity)
             if (itemsCount != count)
                 stringBuilder.append(", ")
         }

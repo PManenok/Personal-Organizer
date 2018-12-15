@@ -11,6 +11,15 @@
 
     <string name="default_month_title">Month, Year</string>
     <string name="default_record_title">Record title</string>
+    <string name="default_list_description">Description</string>
+    <string name="default_birthday_description">Birthday</string>
+
+
+    <string name="hint_birthday_name">Name</string>
+    <string name="hint_birthday_date">Date</string>
+    <string name="hint_birthday_comment">Comment</string>
+    <string name="hint_birthday_email">Email</string>
+    <string name="hint_birthday_phone">Phone</string>
 
     <string name="monday">Mon</string>
     <string name="tuesday">Tue</string>
@@ -19,7 +28,7 @@
     <string name="friday">Fri</string>
     <string name="saturday">Sat</string>
     <string name="sunday">Sun</string>
-
+    <!--<string name="default_note_comment_linear_et">=@{viewModel.textNote != `textNote` ? viewModel.textNote : null}</string>-->
 
 
 </resources>

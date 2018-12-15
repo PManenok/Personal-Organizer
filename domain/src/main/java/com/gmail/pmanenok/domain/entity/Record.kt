@@ -1,8 +1,9 @@
 package com.gmail.pmanenok.domain.entity
 
-abstract class BaseNote (
+open class Record(
     val id: String,
     val date: Long,
     val type: NoteType,
-    val title: String
-)  : DomainEntity
+    val title: String,
+    val comment: String
+) : DomainEntity

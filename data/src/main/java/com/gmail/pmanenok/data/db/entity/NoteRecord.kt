@@ -9,6 +9,6 @@ data class NoteRecord(
     val type: String,
     val title: String,
     val comment: String,
-    @ColumnInfo(name = "note_text")
+    //@ColumnInfo(name = "text_note")
     var textNote: String
 )
