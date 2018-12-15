@@ -1,35 +1,40 @@
 package com.gmail.pmanenok.personalorganizer.presentation.screen.note
 
+import android.util.Log
+import com.gmail.pmanenok.personalorganizer.R
 import com.gmail.pmanenok.personalorganizer.presentation.base.BaseRouter
+import com.gmail.pmanenok.personalorganizer.presentation.screen.note.birthdayrec.BirthdayRecordFragment
+import com.gmail.pmanenok.personalorganizer.presentation.screen.note.listrec.ListRecordFragment
+import com.gmail.pmanenok.personalorganizer.presentation.screen.note.noterec.NoteRecordFragment
 
 class NoteRouter(activity: NoteActivity) : BaseRouter<NoteActivity>(activity) {
-
-    /*fun goToStudentList() {
-        Log.e("bbb", "router goToStudentList")
+    fun goToNoteRecord(id: String?) {
+        Log.e("NoteRouter", "router goToNoteRecord")
         replaceFragment(
             activity.supportFragmentManager,
-            StudentListFragment.getInstance(),
-            R.id.student_container,
+            NoteRecordFragment.getInstance(id),
+            R.id.note_record_container,
             false
         )
     }
 
-    fun goToStudentDetails(id: String) {
-        Log.e("bbb", "router goToStudentDetails")
-        val containerDetails = activity.findViewById<View>(R.id.student_container_details)
-        if (containerDetails == null) {
-            replaceFragment(
-                activity.supportFragmentManager,
-                StudentDetailsFragment.getInstance(id),
-                R.id.student_container,
-                true
-            )
-        } else {
-            replaceFragment(
-                activity.supportFragmentManager,
-                StudentDetailsFragment.getInstance(id),
-                R.id.student_container_details,
-                false
-            )
-        }*/
+    fun goToListRecord(id: String?) {
+        Log.e("NoteRouter", "router goToListRecord")
+        replaceFragment(
+            activity.supportFragmentManager,
+            ListRecordFragment.getInstance(id),
+            R.id.note_record_container,
+            false
+        )
+    }
+
+    fun goToBirthdayRecord(id: String?) {
+        Log.e("NoteRouter", "router goToBirthdayRecord")
+        replaceFragment(
+            activity.supportFragmentManager,
+            BirthdayRecordFragment.getInstance(id),
+            R.id.note_record_container,
+            false
+        )
+    }
 }

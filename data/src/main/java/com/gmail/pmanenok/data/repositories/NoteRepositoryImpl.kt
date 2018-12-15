@@ -1,31 +1,53 @@
 package com.gmail.pmanenok.data.repositories
 
+import android.util.Log
 import com.gmail.pmanenok.data.db.dao.NoteDao
-import com.gmail.pmanenok.data.db.entity.transformToDb
-import com.gmail.pmanenok.data.net.RestService
+import com.gmail.pmanenok.data.db.entity.TypedNoteDb
 import com.gmail.pmanenok.domain.entity.Note
 import com.gmail.pmanenok.domain.entity.NoteSearch
 import com.gmail.pmanenok.domain.entity.NoteType
-import com.gmail.pmanenok.domain.entity.TypedNote
 import com.gmail.pmanenok.domain.repositories.NoteRepository
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Observable
-import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class NoteRepositoryImpl @Inject constructor(/*val noteDao: NoteDao*/) : NoteRepository {
-    override fun getAllTypedNoteByRange(dayFirst: Long, dayLast: Long): Flowable<List<TypedNote>> {
-        return Flowable.just(listOfAllTypedNotes).take(1)
+class NoteRepositoryImpl @Inject constructor(val noteDao: NoteDao) : NoteRepository {
+    override fun getByDayRange(idBegin: Long, idEnd: Long): Flowable<List<Pair<Long, List<Note>>>> {
+        Log.e("NoteRepositoryImpl","idBegin $idBegin, idEnd $idEnd")
+        //return noteDao.getByDayRange(idBegin, idEnd)
+        return Flowable.just(listOfAllNotes).map { list ->
+            val map: MutableMap<Long, MutableList<Note>> = mutableMapOf()
+            for (entry in list) {
+                if (map.containsKey(entry.date)) map[entry.date]?.add(entry)
+                else map[entry.date] = mutableListOf(entry)
+            }
+            var date = idBegin
+            while (date <= idEnd) {
+                if (!map.containsKey(date)) map[date] = mutableListOf()
+                date += 86400000L
+            }
+            return@map map.toSortedMap().toList()
+        }
+    }
+
+    override fun getAllTypedNoteByRange(dayFirst: Long, dayLast: Long): Flowable<Map<Long, List<Int>>> {
+        return Flowable.just(listOfAllTypedNotes).map { list ->
+            val map: MutableMap<Long, ArrayList<Int>> = mutableMapOf()
+            for (entry in list) {
+                if (map.containsKey(entry.day)) map[entry.day]?.add(NoteType.valueOf(entry.type).num)
+                else map[entry.day] = arrayListOf(NoteType.valueOf(entry.type).num)
+            }
+            return@map map
+        }
     }
 
     override fun getAllTypedNote(): Flowable<Map<Long, List<Int>>> {
         return Flowable.just(listOfAllTypedNotes).map { list ->
             val map: MutableMap<Long, ArrayList<Int>> = mutableMapOf()
             for (entry in list) {
-                if (map.containsKey(entry.date)) map[entry.date]?.add(NoteType.valueOf(entry.type).num)
-                else map[entry.date] = arrayListOf(NoteType.valueOf(entry.type).num)
+                if (map.containsKey(entry.day)) map[entry.day]?.add(NoteType.valueOf(entry.type).num)
+                else map[entry.day] = arrayListOf(NoteType.valueOf(entry.type).num)
             }
             return@map map
         }
@@ -35,8 +57,6 @@ class NoteRepositoryImpl @Inject constructor(/*val noteDao: NoteDao*/) : NoteRep
         const val TIME_BUFFER = 60000
     }
 
-    val calendar = Calendar.getInstance()
-
     val listOfAllNotes = listOf(
         Note("1544302800001", 1544475600000, NoteType.TYPE_NOTE, "My NOTE", "Hello from Notes"),
         Note("1544302800002", 1544475600000, NoteType.TYPE_BIRTHDAY, "My Birthday", ""),
@@ -44,10 +64,10 @@ class NoteRepositoryImpl @Inject constructor(/*val noteDao: NoteDao*/) : NoteRep
         Note("1544302800004", 1544389200000, NoteType.TYPE_BIRTHDAY, "My BIRTHDAY", "")
     )
     val listOfAllTypedNotes = listOf(
-        TypedNote("1544302800001", 1544475600000, "TYPE_NOTE"),
-        TypedNote("1544302800002", 1544475600000, "TYPE_BIRTHDAY"),
-        TypedNote("1544302800003", 1544475600000, "TYPE_LIST"),
-        TypedNote("1544302800004", 1544389200000, "TYPE_BIRTHDAY")
+        TypedNoteDb(1544475600000, "TYPE_NOTE"),
+        TypedNoteDb(1544475600000, "TYPE_BIRTHDAY"),
+        TypedNoteDb(1544475600000, "TYPE_LIST"),
+        TypedNoteDb(1544389200000, "TYPE_BIRTHDAY")
     )
     val listOfDayNotes = listOf(
         Note("1544302800001", 1544475600000, NoteType.TYPE_NOTE, "My NOTE", "Hello from Notes"),

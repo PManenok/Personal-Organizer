@@ -1,4 +1,4 @@
-package com.gmail.pmanenok.domain.usecases
+package com.gmail.pmanenok.domain.usecases.note
 
 import com.gmail.pmanenok.domain.executor.PostExecutorThread
 import io.reactivex.Scheduler

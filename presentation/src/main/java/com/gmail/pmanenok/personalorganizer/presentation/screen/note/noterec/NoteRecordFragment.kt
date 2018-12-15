@@ -2,17 +2,25 @@ package com.gmail.pmanenok.personalorganizer.presentation.screen.note.noterec
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.gmail.pmanenok.personalorganizer.R
-import com.gmail.pmanenok.personalorganizer.databinding.FragmentMonthBinding
 import com.gmail.pmanenok.personalorganizer.databinding.FragmentNoteRecordBinding
 import com.gmail.pmanenok.personalorganizer.presentation.base.BaseMvvmFragment
 import com.gmail.pmanenok.personalorganizer.presentation.screen.note.NoteRouter
-import kotlinx.android.synthetic.main.fragment_month.*
-
 
 class NoteRecordFragment : BaseMvvmFragment<NoteRecordViewModel, NoteRouter, FragmentNoteRecordBinding>() {
+    companion object {
+        private const val NOTE_ID_EXTRA = "NOTE_ID_EXTRA"
+        fun getInstance(id: String? = null): NoteRecordFragment {
+            val fragment = NoteRecordFragment()
+            val bundle = Bundle()
+            if (id != null)
+                bundle.putString(NOTE_ID_EXTRA, id)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+
     override fun prodiveViewModel(): NoteRecordViewModel {
         return ViewModelProviders.of(this).get(NoteRecordViewModel::class.java)
     }
@@ -28,6 +36,11 @@ class NoteRecordFragment : BaseMvvmFragment<NoteRecordViewModel, NoteRouter, Fra
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val id = arguments?.getString(NOTE_ID_EXTRA) ?: NOTE_ID_EXTRA
+        if (id != NOTE_ID_EXTRA) {
+
+        }
     }
+
 
 }

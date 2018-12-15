@@ -1,10 +1,9 @@
 package com.gmail.pmanenok.personalorganizer.presentation.screen.main.day
 
-import android.databinding.ObservableBoolean
-import android.util.Log
-import com.gmail.pmanenok.domain.usecases.GetNotesByDayUseCase
-import com.gmail.pmanenok.domain.usecases.GetNotesUseCase
-import com.gmail.pmanenok.domain.usecases.SearchNotesUseCase
+import android.databinding.ObservableField
+import android.text.format.DateFormat
+import com.gmail.pmanenok.domain.usecases.date.GetSelectedDayUseCase
+import com.gmail.pmanenok.domain.usecases.note.GetNotesByDayUseCase
 import com.gmail.pmanenok.personalorganizer.app.App
 import com.gmail.pmanenok.personalorganizer.presentation.screen.main.MainRouter
 import com.gmail.pmanenok.personalorganizer.presentation.base.BaseViewModel
@@ -15,13 +14,17 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class DayViewModel : BaseViewModel<MainRouter>() {
-    val adapter = NoteItemAdapter() //{ Log.e("DayViewModel", "Item clicked") }
+    val adapter = NoteItemAdapter {
+        router?.goToNoteActivity(it.type, it.id)
+    }
     val clickSubject: PublishSubject<Boolean> = PublishSubject.create()
-
+    val dayTitle = ObservableField<String>("Day title")
+    var today: Long = 0L
     @Inject
     public lateinit var notesUseCase: GetNotesByDayUseCase
 
-    var dayId: Long = 0L
+    @Inject
+    public lateinit var getSelectedDayUseCase: GetSelectedDayUseCase
 
     init {
         clickSubject
@@ -31,18 +34,25 @@ class DayViewModel : BaseViewModel<MainRouter>() {
         App.appComponent.inject(this)
     }
 
-    fun get() {
-        val disposable = notesUseCase.getByDay(dayId)
+    fun refresh() {
+        addToDisposable(getSelectedDayUseCase.get().subscribeBy(
+            onNext = {
+                dayTitle.set(DateFormat.format("d MMMM yyyy", it).toString())
+                today = it
+            },
+            onError = {
+                router?.showError(it)
+            }
+        ))
+        addToDisposable(notesUseCase.getByDay(today)
             .subscribeBy(
                 onNext = {
                     adapter.cleanItems()
                     adapter.addItems(it)
-                    Log.e("aaa", "${adapter.itemList}")
                 },
                 onError = {
                     router?.showError(it)
                 }
-            )
-        addToDisposable(disposable)
+            ))
     }
 }

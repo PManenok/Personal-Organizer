@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -18,7 +19,8 @@
             layout="@layout/include_main_top_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            bind:includeMainTopBarBind="@{viewModel}" />
 
 
         <com.gmail.pmanenok.personalorganizer.presentation.views.TabLinearLayout
@@ -27,13 +29,13 @@
             android:layout_height="0dp"
             android:minWidth="?attr/actionBarSize"
             android:orientation="vertical"
-            app:linearTabTextSize="15sp"
-            app:linearTabTextGravity="center"
-            app:linearTabSelectedTextColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/main_view_pager"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/main_top_bar_include" />
+            app:layout_constraintTop_toBottomOf="@id/main_top_bar_include"
+            app:linearTabSelectedTextColor="@color/colorPrimary"
+            app:linearTabTextGravity="center"
+            app:linearTabTextSize="15sp" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/main_view_pager"

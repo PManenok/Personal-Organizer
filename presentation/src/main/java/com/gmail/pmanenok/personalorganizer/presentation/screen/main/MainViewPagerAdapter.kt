@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.res.Configuration
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.app.FragmentStatePagerAdapter
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.DynamicDrawableSpan
 import android.text.style.ImageSpan
 
-class MainViewPagerAdapter(private val context: Context, fM: FragmentManager) : FragmentPagerAdapter(fM) {
+class MainViewPagerAdapter(private val context: Context, fM: FragmentManager) : FragmentStatePagerAdapter(fM) {
     private val imageResId = mutableListOf<Int>()
     private val pages = mutableListOf<Fragment>()
     private val titles = mutableListOf<String>()
@@ -21,7 +21,9 @@ class MainViewPagerAdapter(private val context: Context, fM: FragmentManager) : 
         titles.add(title)
     }
 
-    override fun getItem(position: Int): Fragment = pages[position]
+    override fun getItem(position: Int): Fragment {
+        return pages[position]
+    }
 
     override fun getCount(): Int = pages.size
 

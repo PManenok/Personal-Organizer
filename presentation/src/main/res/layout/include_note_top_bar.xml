@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="includeNoteTopBarBind"
+            type="com.gmail.pmanenok.personalorganizer.presentation.screen.note.NoteViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:minHeight="?attr/actionBarSize"
+            app:layout_constraintEnd_toStartOf="@id/record_title_et"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_button_back_black_45dp" />
+
+        <EditText
+            android:id="@+id/record_title_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:focusable="auto"
+            android:focusableInTouchMode="true"
+            android:hint="@string/default_record_title"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1"
+            android:minHeight="?attr/actionBarSize"
+            android:scrollHorizontally="true"
+            android:text="@{includeNoteTopBarBind.title != `title` ? includeNoteTopBarBind.title : null}"
+            app:layout_constraintBottom_toBottomOf="@id/imageButton"
+            app:layout_constraintEnd_toStartOf="@id/imageButton2"
+            app:layout_constraintStart_toEndOf="@id/imageButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/record_title_et"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_set_notification_date_black_45dp" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -1,8 +1,10 @@
 package com.gmail.pmanenok.personalorganizer.inject
 
 import com.gmail.pmanenok.personalorganizer.app.App
+import com.gmail.pmanenok.personalorganizer.presentation.screen.main.MainViewModel
 import com.gmail.pmanenok.personalorganizer.presentation.screen.main.day.DayViewModel
 import com.gmail.pmanenok.personalorganizer.presentation.screen.main.month.MonthViewModel
+import com.gmail.pmanenok.personalorganizer.presentation.screen.main.week.WeekViewModel
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -26,4 +28,6 @@ interface AppComponent {
     fun inject(view: DayViewModel)
 
     fun inject(view: MonthViewModel)
+
+    fun inject(view: WeekViewModel)
 }

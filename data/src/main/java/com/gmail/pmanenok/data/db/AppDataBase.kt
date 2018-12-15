@@ -5,9 +5,12 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.gmail.pmanenok.data.db.dao.NoteDao
-import com.gmail.pmanenok.data.db.entity.NoteDb
+import com.gmail.pmanenok.data.db.entity.db.BirthdayDb
+import com.gmail.pmanenok.data.db.entity.db.ListDb
+import com.gmail.pmanenok.data.db.entity.db.NoteDb
+import com.gmail.pmanenok.data.db.entity.db.RecordDb
 
-@Database(entities = [NoteDb::class], version = 1)
+@Database(entities = [RecordDb::class, NoteDb::class, ListDb::class, BirthdayDb::class], version = 1)
 abstract class AppDataBase : RoomDatabase() {
     companion object {
         const val DATABASE_NAME = "oEaOtdn"
@@ -24,8 +27,3 @@ abstract class AppDataBase : RoomDatabase() {
 
     abstract fun getNoteDao(): NoteDao
 }
-/*
-*warning: Schema export directory is not provided to the annotation processor so we cannot export the schema.
-* You can either provide `room.schemaLocation` annotation processor argument OR set exportSchema to false.
-public abstract class AppDataBase extends android.arch.persistence.room.RoomDatabase {
-                ^	*/

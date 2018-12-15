@@ -44,16 +44,25 @@ class CalendarView : GridLayout {
     private var listenTouch: Boolean = false
     private lateinit var currentDay: Day
     private val cells = mutableListOf<CellView>()
-    private val cellParamsMap = mutableMapOf<Long, CellParams>()
     private var dataChanged: Boolean = false
         set(value) {
+            field = value
             if (value) {
                 updateCalendar()
             }
-            field = value
         }
+    private var cellOnClickListener: View.OnClickListener? = null
+
+    fun setCellOnClickListener(cellOnClickListener: View.OnClickListener?) {
+        if (this.cellOnClickListener != cellOnClickListener) {
+            this.cellOnClickListener = cellOnClickListener
+            for (cell in cells) {
+                cell.setOnClickListener(this.cellOnClickListener)
+            }
+        }
+    }
+
     //private val customTypeface: Typeface? = null
-    private var lastSelectedDay: Day? = null
     //private val locale: Locale? = null
     //private lateinit var selectedDate: Date
     //private var calendarListener: CalendarListener? = null
@@ -119,13 +128,10 @@ class CalendarView : GridLayout {
         for (week in weeks) {
             for (tag in dayTags) {
                 val cell = week.findViewWithTag<CellView>(tag)
-                cell.setOnClickListener {
-                    lastSelectedDay = Day(cell.dayId)
-                    Log.e("Cell touched", "${cell.dayId}")
-                }
                 cells.add(cell)
             }
         }
+        currentDay = Day(getDayTimeInMilliseconds(Calendar.getInstance().timeInMillis))
     }
 
     private fun setCalendar(calendar: Calendar, autoUpdate: Boolean = false) {
@@ -134,7 +140,6 @@ class CalendarView : GridLayout {
         calendar.firstDayOfWeek = Calendar.MONDAY
         calendar.timeInMillis = getDayTimeInMilliseconds(calendar.timeInMillis)
         this.currentCalendar = calendar
-        currentDay = Day(currentCalendar.timeInMillis)
         invalidate()
         updateCalendar()
         if (autoUpdate) {
@@ -143,9 +148,8 @@ class CalendarView : GridLayout {
     }
 
     private fun updateCalendar() {
-        Log.e("CalendarView", "updateCalendar")
+        Log.e("CalendarView", "${currentDay.day},${currentDay.month},${currentDay.year},${currentDay.longTime}")
         if (dataChanged) {
-            cellParamsMap.clear()
             dataChanged = false
             currentCalendar.timeInMillis = currentDay.longTime
         }
@@ -153,40 +157,21 @@ class CalendarView : GridLayout {
         val currentTime = currentCalendar.timeInMillis
         monthTitleView.text = DateFormat.format("MMMM, yyyy", currentTime).toString().toUpperCase()
         getFirstShowingDay(currentCalendar)
-        Log.e("CalendarView", "adapter != null ${adapter != null}")
         for (cell in cells) {
-            refreshCell(cell)
             val dayId = getDayTimeInMilliseconds(currentCalendar.timeInMillis)
-            if (!cellParamsMap.containsKey(dayId)) cellParamsMap[dayId] = createCellParams(dayId, currentMonth)
-            val cellParam = cellParamsMap[dayId]
-            if (cellParam != null) {
-                cell.setParams(dayId, cellParam.text, cellParam.notesList, cellParam.borderColor, cellParam.textColor)
-            }
+            cell.dayId = dayId
+            cell.text = currentCalendar.get(Calendar.DAY_OF_MONTH).toString()
+            if (dayId == currentDay.longTime)
+                cell.setBorderColor(Color.RED)
+            else cell.resetBorderColor()
+            if (currentCalendar.get(Calendar.MONTH) == currentMonth)
+                cell.setTextColor(Color.BLACK)
+            else cell.resetTextColor()
+            cell.clearNotes()
+            cell.setNotes(adapter?.getNotesForDay(dayId))
             currentCalendar.set(Calendar.DATE, currentCalendar[Calendar.DATE] + 1)
         }
         currentCalendar.timeInMillis = currentTime
-    }
-
-    private fun createCellParams(dayId: Long, currentMonth: Int): CellParams {
-        val text = currentCalendar[Calendar.DATE].toString()
-        val notes = if (adapter != null) adapter!!.getNotesForDay(dayId) else null
-        val borderColor = if (currentCalendar.timeInMillis == currentDay.longTime) Color.RED else null
-        val textColor = if (currentCalendar.get(Calendar.MONTH) == currentMonth) Color.BLACK else null
-        return CellParams(dayId, text, notes, borderColor, textColor)
-    }
-
-    data class CellParams(
-        val dayId: Long,
-        val text: String,
-        val notesList: List<Int>?,
-        val borderColor: Int?,
-        val textColor: Int?
-    )
-
-    private fun refreshCell(cell: CellView) {
-        cell.clearNotes()
-        cell.resetBorderColor()
-        cell.resetTextColor()
     }
 
     private fun getFirstShowingDay(calendar: Calendar) {
@@ -346,6 +331,7 @@ class CalendarView : GridLayout {
 
         fun setItems(items: MutableMap<Long, List<Int>>) {
             itemList.putAll(items)
+            Log.e("NoteAdapter setItems", "dataChanged ${calendarView?.get()?.dataChanged}")
             calendarView?.get()?.dataChanged = true
         }
 
@@ -362,7 +348,6 @@ class CalendarView : GridLayout {
         abstract fun getMoreDays(dayId: Long, longTime: Long)
 
         fun getNotesForDay(dayId: Long): List<Int>? {
-            Log.e("NoteAdapter", "getNotesForDay")
             if (!itemList.containsKey(dayId))
                 getMoreDays(dayId, calendarView?.get()?.currentDay!!.longTime)
             return itemList[dayId]

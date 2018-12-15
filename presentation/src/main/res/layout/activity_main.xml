@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="viewModel"
-            type="com.gmail.pmanenok.personalorganizer.presentation.screen.main.MainViewModel" />
+                name="viewModel"
+                type="com.gmail.pmanenok.personalorganizer.presentation.screen.main.MainViewModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <include
-            android:id="@+id/main_top_bar_include"
-            layout="@layout/include_main_top_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/main_tab_layout"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+                android:id="@+id/main_top_bar_include"
+                layout="@layout/include_main_top_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/main_tab_layout"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                bind:includeMainTopBarBind="@{viewModel}"/>
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/main_tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:layout_constraintBottom_toTopOf="@id/main_view_pager"
-            app:layout_constraintTop_toBottomOf="@id/main_top_bar_include"
-            app:tabGravity="fill"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/colorAccent"
-            app:tabTextAppearance="@style/TabLinearLayoutTextAppearance"
-            app:tabTextColor="#000000" />
+                android:id="@+id/main_tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                app:layout_constraintBottom_toTopOf="@id/main_view_pager"
+                app:layout_constraintTop_toBottomOf="@id/main_top_bar_include"
+                app:tabGravity="fill"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/colorAccent"
+                app:tabTextAppearance="@style/TabLinearLayoutTextAppearance"
+                app:tabTextColor="#000000"/>
 
         <android.support.v4.view.ViewPager
-            android:id="@+id/main_view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintTop_toBottomOf="@id/main_tab_layout">
+                android:id="@+id/main_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintTop_toBottomOf="@id/main_tab_layout">
 
         </android.support.v4.view.ViewPager>
 

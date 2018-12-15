@@ -1,19 +1,18 @@
-package com.gmail.pmanenok.domain.usecases
+package com.gmail.pmanenok.domain.usecases.note
 
 import com.gmail.pmanenok.domain.entity.Note
 import com.gmail.pmanenok.domain.executor.PostExecutorThread
 import com.gmail.pmanenok.domain.repositories.NoteRepository
-import io.reactivex.Completable
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import javax.inject.Inject
 
-class DeleteNoteUseCase @Inject constructor(
+class GetNotesByDayUseCase @Inject constructor(
     postExecutorThread: PostExecutorThread,
     private val repository: NoteRepository
 ) : BaseUseCase(postExecutorThread) {
 
-    fun delete(id: String): Completable {
-        return repository.delete(id)
+    fun getByDay(day: Long): Flowable<List<Note>> {
+        return repository.getByDay(day)
             .observeOn(postExecutorThread)
             .subscribeOn(workExecutorThread)
     }

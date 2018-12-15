@@ -11,6 +11,17 @@ import com.gmail.pmanenok.personalorganizer.presentation.screen.note.NoteRouter
 
 
 class BirthdayRecordFragment : BaseMvvmFragment<BirthdayRecordViewModel, NoteRouter, FragmentBirthdayRecordBinding>() {
+    companion object {
+        private const val NOTE_ID_EXTRA = "NOTE_ID_EXTRA"
+        fun getInstance(id: String? = null): BirthdayRecordFragment {
+            val fragment = BirthdayRecordFragment()
+            val bundle = Bundle()
+            if (id != null)
+                bundle.putString(NOTE_ID_EXTRA, id)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
     override fun prodiveViewModel(): BirthdayRecordViewModel {
         return ViewModelProviders.of(this).get(BirthdayRecordViewModel::class.java)
     }
@@ -25,6 +36,10 @@ class BirthdayRecordFragment : BaseMvvmFragment<BirthdayRecordViewModel, NoteRou
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val id = arguments?.getString(NOTE_ID_EXTRA) ?: NOTE_ID_EXTRA
+        if (id == NOTE_ID_EXTRA){
+
+        }
 
     }
 

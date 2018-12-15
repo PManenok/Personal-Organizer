@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/new_note"
+            android:icon="@drawable/ic_new_note_black_45dp"
+            android:title="@string/menu_note"/>
+    <item
+            android:id="@+id/new_list"
+            android:icon="@drawable/ic_new_birthday_black_45dp"
+            android:title="@string/menu_list"/>
+    <item
+            android:id="@+id/new_birthday"
+            android:icon="@drawable/ic_new_list_black_45dp"
+            android:title="@string/menu_birthday"/>
+</menu>

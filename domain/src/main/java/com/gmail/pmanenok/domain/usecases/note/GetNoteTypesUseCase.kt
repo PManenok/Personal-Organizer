@@ -1,18 +1,17 @@
-package com.gmail.pmanenok.domain.usecases
+package com.gmail.pmanenok.domain.usecases.note
 
-import com.gmail.pmanenok.domain.entity.TypedNote
 import com.gmail.pmanenok.domain.executor.PostExecutorThread
 import com.gmail.pmanenok.domain.repositories.NoteRepository
 import io.reactivex.Flowable
 import javax.inject.Inject
 
-class GetNoteTypesByRangeUseCase @Inject constructor(
+class GetNoteTypesUseCase @Inject constructor(
     postExecutorThread: PostExecutorThread,
     private val repository: NoteRepository
 ) : BaseUseCase(postExecutorThread) {
 
-    fun getAllNoteTypesByRange(dayFirst: Long, dayLast: Long): Flowable<List<TypedNote>> {
-        return repository.getAllTypedNoteByRange(dayFirst, dayLast)
+    fun getAllNoteTypes(): Flowable<Map<Long,List<Int>>> {
+        return repository.getAllTypedNote()
             .observeOn(postExecutorThread)
             .subscribeOn(workExecutorThread)
     }

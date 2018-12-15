@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.os.Build
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -45,11 +44,8 @@ class TabLinearLayout : LinearLayout {
     /*  Initialize attributes from XML file  */
     private fun initAttrs(attrs: AttributeSet?) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.TabLinearLayout)
-        Log.e("aaa", "$tabSelectedColor")
-
         tabSelectedColor =
                 typedArray.getColor(R.styleable.TabLinearLayout_linearTabSelectedTextColor, Color.TRANSPARENT)
-        Log.e("aaa", "$tabSelectedColor")
         tabTextGravity = typedArray.getInteger(R.styleable.TabLinearLayout_linearTabTextGravity, Gravity.NO_GRAVITY)
         typedArray.recycle()
     }
@@ -59,7 +55,7 @@ class TabLinearLayout : LinearLayout {
         var position: Int = -1
     }
 
-    fun setupViewPager(newViewPager: ViewPager?) {
+    fun setupWithViewPager(newViewPager: ViewPager?) {
         if (pageChangeListener != null) {
             viewPager?.removeOnPageChangeListener(pageChangeListener!!)
         }
@@ -107,7 +103,7 @@ class TabLinearLayout : LinearLayout {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        this.setupViewPager(null)
+        this.setupWithViewPager(null)
     }
 
     private fun getTabAt(position: Int): TabTextView {
@@ -115,7 +111,6 @@ class TabLinearLayout : LinearLayout {
     }
 
     private fun selectTab(tab: TabTextView) {
-        Log.e("aaa", "selected tab " + tab.position)
         if (selectedTab != tab) {
             selectedTab?.setBackgroundColor(Color.TRANSPARENT)
             selectedTab = tab

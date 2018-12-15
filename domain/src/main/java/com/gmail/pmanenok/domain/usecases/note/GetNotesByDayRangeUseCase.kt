@@ -1,19 +1,18 @@
-package com.gmail.pmanenok.domain.usecases
+package com.gmail.pmanenok.domain.usecases.note
 
 import com.gmail.pmanenok.domain.entity.Note
 import com.gmail.pmanenok.domain.executor.PostExecutorThread
 import com.gmail.pmanenok.domain.repositories.NoteRepository
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import javax.inject.Inject
 
-class GetNotesByDayUseCase @Inject constructor(
+class GetNotesByDayRangeUseCase @Inject constructor(
     postExecutorThread: PostExecutorThread,
     private val repository: NoteRepository
 ) : BaseUseCase(postExecutorThread) {
 
-    fun getByDay(day: Long): Flowable<List<Note>> {
-        return repository.getByDay(day)
+    fun getByDay(idBegin: Long, idEnd: Long): Flowable<List<Pair<Long, List<Note>>>> {
+        return repository.getByDayRange(idBegin, idEnd)
             .observeOn(postExecutorThread)
             .subscribeOn(workExecutorThread)
     }

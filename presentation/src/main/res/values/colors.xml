@@ -8,6 +8,7 @@
 
 
     <!-- My app colors -->
+    <color name="transparent">#00000000</color>
     <color name="black">#000000</color>
     <color name="darkGrey">#4d4d4d</color>
     <color name="grey">#a79d9d</color>
