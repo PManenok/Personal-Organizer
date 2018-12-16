@@ -1,6 +1,7 @@
 package com.gmail.pmanenok.personalorganizer.presentation.screen.main.week
 
 import android.databinding.ObservableField
+import android.util.Log
 import com.gmail.pmanenok.domain.usecases.date.GetSelectedDayUseCase
 import com.gmail.pmanenok.domain.usecases.date.UpdateSelectedDayUseCase
 import com.gmail.pmanenok.domain.usecases.note.GetNotesTitlesByDayRangeUseCase
@@ -23,10 +24,17 @@ class WeekViewModel : BaseViewModel<MainRouter>() {
     var weekEndDay: Long = 0L
         set(value) {
             field = value
+            Log.e("WeekViewModel", "weekEndDay set")
+            Log.e("WeekViewModel", "before getNotesTitlesByDayRangeUseCase $weekBeginDay $weekEndDay")
             addToDisposable(getNotesTitlesByDayRangeUseCase.getByDay(weekBeginDay, weekEndDay).subscribeBy(
                 onNext = {
+                    Log.e(
+                        "WeekViewModel",
+                        "weekEndDay set getNotesTitlesByDayRangeUseCase $weekBeginDay $weekEndDay"
+                    )
                     adapter.cleanItems()
                     adapter.addItems(it)
+                    Log.e("WeekViewModel", "weekEndDay set getNotesTitlesByDayRangeUseCase $it")
                 },
                 onError = {
                     router?.showError(it)
@@ -42,10 +50,38 @@ class WeekViewModel : BaseViewModel<MainRouter>() {
     public lateinit var getSelectedDayUseCase: GetSelectedDayUseCase
 
     init {
+        Log.e("WeekViewModel", "init")
         App.appComponent.inject(this)
+        addToDisposable(getSelectedDayUseCase.get().subscribeBy(
+            onNext = {
+                Log.e("WeekViewModel", "getSelectedDayUseCase weekTitle selectedDay countWeekRange")
+                val calendar = Calendar.getInstance()
+                calendar.firstDayOfWeek = Calendar.MONDAY
+                calendar.timeInMillis = it
+                val weekNum = calendar[Calendar.WEEK_OF_YEAR]
+                weekTitle.set("Week " + weekNum.toString())
+                selectedDay = it
+                countWeekRange(it)
+            },
+            onError = {
+                router?.showError(it)
+            }
+        ))/*
+        Log.e("WeekViewModel", "before getNotesTitlesByDayRangeUseCase $weekBeginDay $weekEndDay")
+        addToDisposable(getNotesTitlesByDayRangeUseCase.getByDay(weekBeginDay, weekEndDay).subscribeBy(
+            onNext = {
+                Log.e("WeekViewModel", "getNotesTitlesByDayRangeUseCase $weekBeginDay $weekEndDay")
+                adapter.cleanItems()
+                adapter.addItems(it)
+            },
+            onError = {
+                router?.showError(it)
+            }
+        ))*/
     }
 
     private fun countWeekRange(it: Long) {
+        Log.e("WeekViewModel", "countWeekRange $weekBeginDay $weekEndDay")
         val calendar = Calendar.getInstance()
         calendar.firstDayOfWeek = Calendar.MONDAY
         calendar.timeInMillis = it
@@ -58,29 +94,17 @@ class WeekViewModel : BaseViewModel<MainRouter>() {
     }
 
     fun refresh() {
-        addToDisposable(getSelectedDayUseCase.get().subscribeBy(
-            onNext = {
-                val calendar = Calendar.getInstance()
-                calendar.firstDayOfWeek = Calendar.MONDAY
-                calendar.timeInMillis = it
-                val weekNum = calendar[Calendar.WEEK_OF_YEAR]
-                weekTitle.set("Week " + weekNum.toString())
-                selectedDay = it
-                countWeekRange(it)
-            },
-            onError = {
-                router?.showError(it)
-            }
-        ))
-        if (weekBeginDay != 0L && weekEndDay != 0L)
+        Log.e("WeekViewModel", "refresh")
+        /*if (weekBeginDay != 0L && weekEndDay != 0L)
             addToDisposable(getNotesTitlesByDayRangeUseCase.getByDay(weekBeginDay, weekEndDay).subscribeBy(
                 onNext = {
                     adapter.cleanItems()
                     adapter.addItems(it)
+                    Log.e("WeekViewModel", "refresh getNotesTitlesByDayRangeUseCase")
                 },
                 onError = {
                     router?.showError(it)
                 }
-            ))
+            ))*/
     }
 }

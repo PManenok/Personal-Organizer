@@ -2,7 +2,7 @@ package com.gmail.pmanenok.personalorganizer.presentation.utils
 
 import java.util.*
 
-fun todayFromCalendar(): Long {
+fun todayInMillis(): Long {
     val calendar = Calendar.getInstance()
     calendar.set(Calendar.HOUR_OF_DAY, 0)
     calendar.set(Calendar.MINUTE, 0)

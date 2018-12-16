@@ -16,19 +16,16 @@ import java.util.*
 import javax.inject.Inject
 
 class BirthdayRecordViewModel : BaseViewModel<NoteRouter>() {
-    val title =
-        ObservableField<String>()
+    val title = ObservableField<String>()
     val name = ObservableField<String>()
     val date = ObservableField<String>()
-    val comment =
-        ObservableField<String>()
+    val comment = ObservableField<String>()
+    var day: Long = 0L
+
     //val notify = ObservableBoolean(false)
-    val backOnClick = View.OnClickListener {
-        router?.goBack()
-    }
-    val notifyOnClick = View.OnClickListener {
-        //router?.showNotify()
-    }
+    val backOnClick = View.OnClickListener { router?.goBack() }
+    val notifyOnClick = View.OnClickListener { /*router?.showNotify()*/ }
+
     @Inject
     public lateinit var getRecordByIdUseCase: GetRecordByIdUseCase
     @Inject
@@ -37,6 +34,7 @@ class BirthdayRecordViewModel : BaseViewModel<NoteRouter>() {
     public lateinit var updateRecordUseCase: UpdateRecordUseCase
     @Inject
     public lateinit var deleteRecordUseCase: DeleteRecordUseCase
+
 
     init {
         App.appComponent.inject(this)

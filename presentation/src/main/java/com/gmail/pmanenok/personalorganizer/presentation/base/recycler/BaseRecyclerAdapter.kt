@@ -1,11 +1,15 @@
 package com.gmail.pmanenok.personalorganizer.presentation.base.recycler
 
 import android.support.v7.widget.RecyclerView
-import android.view.View
+import com.gmail.pmanenok.domain.entity.Record
 import io.reactivex.subjects.PublishSubject
 
 abstract class BaseRecyclerAdapter<Entity, VM : BaseItemViewModel<Entity>>
-    (val itemList: MutableList<Entity> = mutableListOf(), val onItemClick: (Entity) -> Unit) :
+    (
+    val itemList: MutableList<Entity> = mutableListOf(),
+    val onItemClick: (Entity) -> Unit = {},
+    val onItemLongClick: (Entity) -> Unit = {}
+) :
     RecyclerView.Adapter<BaseViewHolder<Entity, VM, *>>() {
 
     val clickItemSubject = PublishSubject.create<ItemClick<Entity>>()
@@ -34,6 +38,13 @@ abstract class BaseRecyclerAdapter<Entity, VM : BaseItemViewModel<Entity>>
             clickItemSubject.onNext(ItemClick(itemList[pos], pos))
             holder.viewModel.onItemClick()
             onItemClick(itemList[pos])
+        }
+        holder.itemView.setOnLongClickListener {
+            val pos = holder.adapterPosition
+            clickItemSubject.onNext(ItemClick(itemList[pos], pos))
+            holder.viewModel.onItemClick()
+            onItemLongClick(itemList[pos])
+            return@setOnLongClickListener true
         }
     }
 

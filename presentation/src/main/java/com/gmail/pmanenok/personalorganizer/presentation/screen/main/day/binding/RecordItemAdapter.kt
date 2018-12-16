@@ -4,8 +4,8 @@ import android.view.ViewGroup
 import com.gmail.pmanenok.domain.entity.Record
 import com.gmail.pmanenok.personalorganizer.presentation.base.recycler.BaseRecyclerAdapter
 
-class RecordItemAdapter(onItemClick: (Record) -> Unit) :
-BaseRecyclerAdapter<Record, RecordItemViewModel>(onItemClick = onItemClick) {
+class RecordItemAdapter(onItemClick: (Record) -> Unit = {}, onItemLongClick: (Record) -> Unit = {}) :
+BaseRecyclerAdapter<Record, RecordItemViewModel>(onItemClick = onItemClick, onItemLongClick = onItemLongClick) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecordItemViewHolder {
         return RecordItemViewHolder.create(viewGroup, RecordItemViewModel())

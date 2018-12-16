@@ -46,7 +46,7 @@ class MainActivity : BaseMvvmActivity<MainViewModel, MainRouter, ActivityMainBin
         searchBarBtn = main_bar_search_img_btn
         portrait = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
         viewPager = main_view_pager
-        viewPager.offscreenPageLimit = 1
+        viewPager.offscreenPageLimit = 2
         setLongClickListeners()
 
         // The pager adapter, which provides the pages to the view pager widget.

@@ -13,14 +13,14 @@ class DateRepositoryImpl @Inject constructor() : DateRepository {
     }
 
     override fun getSelectedDay(): Flowable<Long> {
-        return Flowable.just((date.selectedDay))
+        return date.selectedDay
     }
 
     override fun updateSelectedDay(dateInMillis: Long) {
-        date.selectedDay = dateInMillis
+        date.selectedDay.offer(dateInMillis)
     }
 
     override fun refreshSelectedDay() {
-        date.selectedDay = date.today
+        date.selectedDay.offer(date.today)
     }
 }

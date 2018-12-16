@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ListRecordViewModel : BaseViewModel<NoteRouter>() {
     val title = ObservableField<String>()
     val comment = ObservableField<String>()
-
+    var day: Long = 0L
     val backOnClick = View.OnClickListener {
         router?.goBack()
     }

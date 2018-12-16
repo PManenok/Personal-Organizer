@@ -2,6 +2,7 @@ package com.gmail.pmanenok.personalorganizer.presentation.screen.main.month
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import com.gmail.pmanenok.personalorganizer.R
 import com.gmail.pmanenok.personalorganizer.databinding.FragmentMonthBinding
 import com.gmail.pmanenok.personalorganizer.presentation.base.BaseMvvmFragment
@@ -24,12 +25,15 @@ class MonthFragment : BaseMvvmFragment<MonthViewModel, MainRouter, FragmentMonth
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Log.e("MonthFragment", "onActivityCreated")
         calendar_view.setCellOnClickListener(viewModel.cellOnClickListener)
         calendar_view.adapter = viewModel.adapter
+        calendar_view.setOnLongClickListener(viewModel.calendarLongClickListener)
     }
 
     override fun onResume() {
         super.onResume()
+        Log.e("MonthFragment", "onResume refresh")
         viewModel.refresh()
     }
 }

@@ -3,6 +3,7 @@ package com.gmail.pmanenok.personalorganizer.presentation.screen.main.week
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import com.gmail.pmanenok.personalorganizer.R
 import com.gmail.pmanenok.personalorganizer.databinding.FragmentWeekBinding
@@ -30,6 +31,7 @@ class WeekFragment : BaseMvvmFragment<WeekViewModel, MainRouter, FragmentWeekBin
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Log.e("WeekFragment", "onActivityCreated")
         binding.weekDaysRecyclerView.adapter = viewModel.adapter
         binding.weekDaysRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.weekDaysRecyclerView.setHasFixedSize(true)
@@ -37,6 +39,7 @@ class WeekFragment : BaseMvvmFragment<WeekViewModel, MainRouter, FragmentWeekBin
 
     override fun onResume() {
         super.onResume()
+        Log.e("WeekFragment", "onResume refresh")
         viewModel.refresh()
     }
 

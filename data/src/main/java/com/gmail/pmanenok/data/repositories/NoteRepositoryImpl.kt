@@ -87,7 +87,7 @@ class NoteRepositoryImpl @Inject constructor(val noteDao: NoteDao, val noteDaoTr
     }
 
     override fun addNoteRecord(note: Note): Completable {
-        return Completable.complete().doOnComplete {
+        return Completable.complete().doOnSubscribe {
             Log.e("NoteRepositoryImpl", "addNoteRecord")
             noteDaoTransactions.insertNote(note.toRecordDb(), note.toNoteDb())
         }

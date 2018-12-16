@@ -24,6 +24,7 @@ class NoteRecordViewModel : BaseViewModel<NoteRouter>() {
     val notify = ObservableBoolean(false)
     var note: Note? = null
     private var noteId: String = ""
+    var day: Long = 0L
 
     fun setRecordId(id: String) {
         if (noteId != "") return
@@ -32,12 +33,12 @@ class NoteRecordViewModel : BaseViewModel<NoteRouter>() {
     }
 
     val backOnClick = View.OnClickListener {
-        Log.e("NoteRecordViewModel","backOnClick")
+        Log.e("NoteRecordViewModel", "backOnClick")
         router?.goBack()
     }
     val notifyOnClick = View.OnClickListener {
         //router?.showNotify()
-        Log.e("NoteRecordViewModel","notifyOnClick")
+        Log.e("NoteRecordViewModel", "notifyOnClick")
         val oldNote = note
         if (oldNote != null) {
             addToDisposable(updateRecordUseCase.update(updateNote(oldNote)).subscribeBy(
@@ -45,7 +46,7 @@ class NoteRecordViewModel : BaseViewModel<NoteRouter>() {
                     router?.showError(it)
                 }
             ))
-        } else if(!title.get().isNullOrBlank() && !textNote.get().isNullOrBlank()) {
+        } else if (!title.get().isNullOrBlank() && !textNote.get().isNullOrBlank()) {
             addToDisposable(addRecordUseCase.add(createNote()).subscribeBy(
                 onError = {
                     router?.showError(it)
@@ -54,11 +55,30 @@ class NoteRecordViewModel : BaseViewModel<NoteRouter>() {
         }
         router?.goBack()
     }
+    /*val notifyOnLongClick = View.OnLongClickListener {
+        //router?.showNotify()
+        Log.e("NoteRecordViewModel", "notifyOnLongClick")
+        val oldNote = note
+        if (oldNote != null) {
+            addToDisposable(updateRecordUseCase.update(updateNote(oldNote)).subscribeBy(
+                onError = {
+                    router?.showError(it)
+                }
+            ))
+        } else if (!title.get().isNullOrBlank() && !textNote.get().isNullOrBlank()) {
+            addToDisposable(addRecordUseCase.add(createNote()).subscribeBy(
+                onError = {
+                    router?.showError(it)
+                }
+            ))
+        }
+        true
+    }*/
 
     private fun createNote(): Note {
         val calendar = Calendar.getInstance()
         val id = calendar.timeInMillis.toString()
-        val day = todayFromLong(calendar.timeInMillis)
+        val day = if (day != 0L) day else todayFromLong(calendar.timeInMillis)
         val title = title.get() ?: ""
         val textNote = textNote.get() ?: ""
         val splitList = textNote.split("\n")
@@ -90,12 +110,10 @@ class NoteRecordViewModel : BaseViewModel<NoteRouter>() {
     }
 
     private fun bindNote() {
-
         addToDisposable(getRecordByIdUseCase.getNoteRecordById(noteId).subscribeBy(
             onNext = {
                 note = it
                 title.set(it.title)
-                //comment = it.comment
                 textNote.set(it.textNote)
             },
             onError = {

@@ -3,6 +3,7 @@ package com.gmail.pmanenok.personalorganizer.presentation.screen.main.day
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import com.gmail.pmanenok.personalorganizer.R
 import com.gmail.pmanenok.personalorganizer.databinding.FragmentDayBinding
@@ -29,6 +30,7 @@ class DayFragment : BaseMvvmFragment<DayViewModel, MainRouter, FragmentDayBindin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("DayFragment","onViewCreated")
         binding.listRecyclerView.adapter = viewModel.adapter
         binding.listRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.listRecyclerView.setHasFixedSize(true)
@@ -36,6 +38,7 @@ class DayFragment : BaseMvvmFragment<DayViewModel, MainRouter, FragmentDayBindin
 
     override fun onResume() {
         super.onResume()
+        Log.e("DayFragment","onResume refresh")
         viewModel.refresh()
     }
 }

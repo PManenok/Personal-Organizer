@@ -8,31 +8,31 @@ import com.gmail.pmanenok.personalorganizer.presentation.screen.note.listrec.Lis
 import com.gmail.pmanenok.personalorganizer.presentation.screen.note.noterec.NoteRecordFragment
 
 class NoteRouter(activity: NoteActivity) : BaseRouter<NoteActivity>(activity) {
-    fun goToNoteRecord(id: String?) {
+    fun goToNoteRecord(id: String?, day: Long = 0L) {
         Log.e("NoteRouter", "router goToNoteRecord")
         replaceFragment(
             activity.supportFragmentManager,
-            NoteRecordFragment.getInstance(id),
+            NoteRecordFragment.getInstance(id, day),
             R.id.note_record_container,
             false
         )
     }
 
-    fun goToListRecord(id: String?) {
+    fun goToListRecord(id: String?, day: Long = 0L) {
         Log.e("NoteRouter", "router goToListRecord")
         replaceFragment(
             activity.supportFragmentManager,
-            ListRecordFragment.getInstance(id),
+            ListRecordFragment.getInstance(id, day),
             R.id.note_record_container,
             false
         )
     }
 
-    fun goToBirthdayRecord(id: String?) {
+    fun goToBirthdayRecord(id: String?, day: Long = 0L) {
         Log.e("NoteRouter", "router goToBirthdayRecord")
         replaceFragment(
             activity.supportFragmentManager,
-            BirthdayRecordFragment.getInstance(id),
+            BirthdayRecordFragment.getInstance(id, day),
             R.id.note_record_container,
             false
         )

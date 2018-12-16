@@ -1,10 +1,11 @@
 package com.gmail.pmanenok.data.entity
 
+import io.reactivex.processors.BehaviorProcessor
 import java.util.*
 
 object DateSingleton {
     val today = todayFromCalendar()
-    var selectedDay = today
+    val selectedDay = BehaviorProcessor.createDefault(today)
 
     private fun todayFromCalendar(): Long {
         val calendar = Calendar.getInstance()

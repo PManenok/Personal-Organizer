@@ -39,4 +39,6 @@ interface AppComponent {
     fun inject(view: ListRecordViewModel)
 
     fun inject(view: BirthdayRecordViewModel)
+
+    fun inject(view: MainViewModel)
 }

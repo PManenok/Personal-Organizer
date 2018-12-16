@@ -22,52 +22,41 @@ import java.util.*
 
 
 class CalendarView : GridLayout {
-    var adapter: CalendarView.NoteAdapter? = null
-        set(value) {
-            value?.calendarView = WeakReference(this)
-            field = value
-            if (value != null) {
-                setCalendar(value.calendarInstance, value.autoUpdate)
-            }
-        }
     private lateinit var view: View
     private var currentCalendar: Calendar = Calendar.getInstance()
     private lateinit var previousMonthButton: ImageButton
     private lateinit var nextMonthButton: ImageButton
     private lateinit var weeks: List<View>
     private lateinit var monthTitleView: TextView
+    private val cells = mutableListOf<CellView>()
     private val dayTags =
         listOf("week_day1", "week_day2", "week_day3", "week_day4", "week_day5", "week_day6", "week_day7")
+    private var cellOnClickListener: View.OnClickListener? = null
+    private lateinit var currentDay: Day
     private var downY: Float = 0f
     private var moveY: Float = 0f
     private var upY: Float = 0f
+    private var momentOfTouch: Long = 0L
     private var listenTouch: Boolean = false
-    private lateinit var currentDay: Day
-    private val cells = mutableListOf<CellView>()
-    private var dataChanged: Boolean = false
+    private var longClick: Boolean = false
+    private var longClickPerformed: Boolean = false
+    var adapter: CalendarView.NoteAdapter? = null
         set(value) {
+            Log.e("CalendarView", "adapter set calendar reset ")
+            value?.calendarView = WeakReference(this)
             field = value
-            if (value) {
+            if (value != null) {
+                setCalendar(value.getCalendar(), value.autoUpdate)
+            }
+        }
+    private var selectedDay: Long = 0L
+        set(value) {
+            if (field != value || currentCalendar.timeInMillis != value) {
+                field = value
+                currentCalendar.timeInMillis = field
                 updateCalendar()
             }
         }
-    private var cellOnClickListener: View.OnClickListener? = null
-
-    fun setCellOnClickListener(cellOnClickListener: View.OnClickListener?) {
-        if (this.cellOnClickListener != cellOnClickListener) {
-            this.cellOnClickListener = cellOnClickListener
-            for (cell in cells) {
-                cell.setOnClickListener(this.cellOnClickListener)
-            }
-        }
-    }
-
-    //private val customTypeface: Typeface? = null
-    //private val locale: Locale? = null
-    //private lateinit var selectedDate: Date
-    //private var calendarListener: CalendarListener? = null
-    //private lateinit var today: Date
-
 
     constructor(context: Context) : super(context) {
         initializeCalendar()
@@ -97,12 +86,27 @@ class CalendarView : GridLayout {
         initializeCalendar()
     }
 
+    fun setCellOnClickListener(cellOnClickListener: View.OnClickListener?) {
+        if (this.cellOnClickListener != cellOnClickListener) {
+            this.cellOnClickListener = cellOnClickListener
+            for (cell in cells) {
+                cell.setOnClickListener(this.cellOnClickListener)
+            }
+        }
+    }
+
+    //private val customTypeface: Typeface? = null
+    //private val locale: Locale? = null
+    //private lateinit var selectedDate: Date
+    //private var calendarListener: CalendarListener? = null
+    //private lateinit var today: Date
+
     private fun initializeCalendar() {
         Log.e("CalendarView", "initializeCalendar")
         val inflate = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         view = inflate.inflate(R.layout.include_calendar_layout, this, true)
         weeks = listOf(week_1_include, week_2_include, week_3_include, week_4_include, week_5_include, week_6_include)
-        previousMonthButton = month_title_back//month_title_back
+        previousMonthButton = month_title_back
         previousMonthButton.setOnClickListener {
             val prevMonth = currentCalendar[Calendar.MONTH] - 1
             if (prevMonth == 12) {
@@ -132,27 +136,25 @@ class CalendarView : GridLayout {
             }
         }
         currentDay = Day(getDayTimeInMilliseconds(Calendar.getInstance().timeInMillis))
+        selectedDay = currentDay.longTime
     }
 
     private fun setCalendar(calendar: Calendar, autoUpdate: Boolean = false) {
         Log.e("CalendarView", "setCalendar")
-
         calendar.firstDayOfWeek = Calendar.MONDAY
         calendar.timeInMillis = getDayTimeInMilliseconds(calendar.timeInMillis)
         this.currentCalendar = calendar
         invalidate()
         updateCalendar()
         if (autoUpdate) {
-            Handler().postDelayed({ setCalendar(Calendar.getInstance(), true) }, 60000)
+            val newCalendar = adapter?.getCalendar() ?: Calendar.getInstance()
+            Handler().postDelayed({ setCalendar(newCalendar, true) }, 60000)
         }
     }
 
     private fun updateCalendar() {
+
         Log.e("CalendarView", "${currentDay.day},${currentDay.month},${currentDay.year},${currentDay.longTime}")
-        if (dataChanged) {
-            dataChanged = false
-            currentCalendar.timeInMillis = currentDay.longTime
-        }
         val currentMonth = currentCalendar.get(Calendar.MONTH)
         val currentTime = currentCalendar.timeInMillis
         monthTitleView.text = DateFormat.format("MMMM, yyyy", currentTime).toString().toUpperCase()
@@ -161,9 +163,12 @@ class CalendarView : GridLayout {
             val dayId = getDayTimeInMilliseconds(currentCalendar.timeInMillis)
             cell.dayId = dayId
             cell.text = currentCalendar.get(Calendar.DAY_OF_MONTH).toString()
-            if (dayId == currentDay.longTime)
-                cell.setBorderColor(Color.RED)
-            else cell.resetBorderColor()
+            if (dayId == currentDay.longTime && dayId == selectedDay) cell.setBorderColor(Color.MAGENTA)
+            else when (dayId) {
+                currentDay.longTime -> cell.setBorderColor(Color.RED)
+                selectedDay -> cell.setBorderColor(Color.BLUE)
+                else -> cell.resetBorderColor()
+            }
             if (currentCalendar.get(Calendar.MONTH) == currentMonth)
                 cell.setTextColor(Color.BLACK)
             else cell.resetTextColor()
@@ -221,47 +226,50 @@ class CalendarView : GridLayout {
         return super.onTouchEvent(event)
     }
 
+    override fun performClick(): Boolean {
+        return super.performClick()
+    }
+
     override fun onInterceptTouchEvent(event: MotionEvent?): Boolean {
         //val x = event?.x ?: 0f
         val y = event?.y ?: 0f
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
+                longClick = true
                 downY = y
                 moveY = y
+                Handler().postDelayed({
+                    if (longClick) {
+                        longClickPerformed = true
+                        performLongClick()
+                    }
+                }, 1000)
             }
             MotionEvent.ACTION_MOVE -> {
                 if (Math.abs(downY - y) > 20f) {
                     listenTouch = true
+                    longClick = false
                     return true
                 }
+            }
+            MotionEvent.ACTION_UP -> {
+                if (!longClickPerformed && longClick) {
+                    longClick = false
+                }
+                else if(longClickPerformed){
+                    longClick = false
+                    longClickPerformed = false
+                    return true
+                }
+            }
+            MotionEvent.ACTION_CANCEL -> {
+                longClick = false
             }
         }
         return super.onInterceptTouchEvent(event)
     }
 
-    override fun performClick(): Boolean {
-        return super.performClick()
-    }
-
-    private inner class Day() {
-        var longTime: Long = 0
-        var day: Int = 0
-        var month: Int = 0
-        var year: Int = 0
-        var dayOfWeek: Int = 0
-
-        constructor(timeInMillis: Long) : this() {
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = timeInMillis
-            this.longTime = calendar.timeInMillis
-            this.day = calendar[Calendar.DAY_OF_MONTH]
-            this.month = calendar[Calendar.MONTH]
-            this.year = calendar[Calendar.YEAR]
-            this.dayOfWeek = calendar[Calendar.DAY_OF_WEEK]
-        }
-    }
-
-/*private fun getAttributes(attrs: AttributeSet) {
+    /*private fun getAttributes(attrs: AttributeSet) {
     *//* var typedArray: TypedArray =
              mContext.obtainStyledAttributes(attrs, R.styleable.CustomCalendarView, 0, 0);
          calendarBackgroundColor = typedArray.getColor(
@@ -311,40 +319,58 @@ class CalendarView : GridLayout {
          typedArray.recycle();*//*
     }*/
 
+    private inner class Day(timeInMillis: Long) {
+        val longTime: Long
+        val day: Int
+        val month: Int
+        val year: Int
+        val dayOfWeek: Int
+
+        init {
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = timeInMillis
+            this.longTime = calendar.timeInMillis
+            this.day = calendar[Calendar.DAY_OF_MONTH]
+            this.month = calendar[Calendar.MONTH]
+            this.year = calendar[Calendar.YEAR]
+            this.dayOfWeek = calendar[Calendar.DAY_OF_WEEK]
+        }
+    }
+
     abstract class NoteAdapter(private val itemList: MutableMap<Long, List<Int>> = mutableMapOf()) {
         var calendarView: WeakReference<CalendarView>? = null
-        var calendarInstance: Calendar = Calendar.getInstance()
         var autoUpdate: Boolean = false
+        private var zone: TimeZone? = null
+        private var locale: Locale? = null
 
-        fun setCalendar(autoUpdate: Boolean = false) {
-            calendarInstance = Calendar.getInstance()
+        fun setCalendarParams(zone: TimeZone? = null, locale: Locale? = null, autoUpdate: Boolean = false) {
+            this.zone = zone
+            this.locale = locale
             this.autoUpdate = autoUpdate
         }
 
-        fun setCalendarWithParams(zone: TimeZone? = null, locale: Locale? = null, autoUpdate: Boolean = false) {
-            if (zone != null && locale != null) calendarInstance = Calendar.getInstance(zone, locale)
-            else if (zone != null) calendarInstance = Calendar.getInstance(zone)
-            else if (locale != null) calendarInstance = Calendar.getInstance(locale)
-            else calendarInstance = Calendar.getInstance()
-            this.autoUpdate = autoUpdate
+        fun getCalendar(): Calendar {
+            return if (zone != null && locale != null) Calendar.getInstance(zone, locale)
+            else if (zone != null) Calendar.getInstance(zone)
+            else if (locale != null) Calendar.getInstance(locale)
+            else Calendar.getInstance()
         }
 
         fun setItems(items: MutableMap<Long, List<Int>>) {
             itemList.clear()
             itemList.putAll(items)
             Log.e("NoteAdapter setItems", "dataChanged $itemList")
-            Log.e("NoteAdapter setItems", "dataChanged ${calendarView?.get()?.dataChanged}")
-            calendarView?.get()?.dataChanged = true
+            calendarView?.get()?.updateCalendar()
         }
 
         fun addItems(items: MutableMap<Long, List<Int>>) {
             itemList.putAll(items)
-            calendarView?.get()?.dataChanged = true
+            calendarView?.get()?.updateCalendar()
         }
 
         fun cleanItems() {
             itemList.clear()
-            calendarView?.get()?.dataChanged = true
+            calendarView?.get()?.updateCalendar()
         }
 
         abstract fun getMoreDays(dayId: Long, longTime: Long)
@@ -353,6 +379,11 @@ class CalendarView : GridLayout {
             if (!itemList.containsKey(dayId))
                 getMoreDays(dayId, calendarView?.get()?.currentDay!!.longTime)
             return itemList[dayId]
+        }
+
+        fun setSelectedDay(timeInMillis: Long) {
+            Log.e("NoteAdapter", "setSelectedDay")
+            calendarView?.get()?.selectedDay = timeInMillis
         }
     }
 }

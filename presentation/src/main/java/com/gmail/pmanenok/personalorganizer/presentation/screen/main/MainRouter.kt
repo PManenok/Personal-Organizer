@@ -5,6 +5,7 @@ import com.gmail.pmanenok.domain.entity.NoteType
 import com.gmail.pmanenok.personalorganizer.presentation.base.BaseRouter
 import com.gmail.pmanenok.personalorganizer.presentation.screen.note.NoteActivity
 import com.gmail.pmanenok.personalorganizer.presentation.screen.note.NoteActivity.Companion.NEW_NOTE
+import com.gmail.pmanenok.personalorganizer.presentation.screen.note.NoteActivity.Companion.NOTE_DATE_EXTRA
 import com.gmail.pmanenok.personalorganizer.presentation.screen.note.NoteActivity.Companion.NOTE_ID_EXTRA
 import com.gmail.pmanenok.personalorganizer.presentation.screen.note.NoteActivity.Companion.NOTE_MODE_EXTRA
 import com.gmail.pmanenok.personalorganizer.presentation.screen.note.NoteActivity.Companion.NOTE_TYPE_EXTRA
@@ -14,8 +15,13 @@ import com.gmail.pmanenok.personalorganizer.presentation.screen.settings.Setting
 
 
 class MainRouter(activity: MainActivity) : BaseRouter<MainActivity>(activity) {
-    fun goToNoteActivity(noteType: NoteType, id: String? = null) {
+    fun goToNoteActivity(
+        noteType: NoteType,
+        id: String? = null,
+        date: Long = 0L
+    ) {
         val intent = Intent(activity, NoteActivity::class.java)
+        intent.putExtra(NOTE_DATE_EXTRA, date)
         intent.putExtra(NOTE_TYPE_EXTRA, noteType.name)
         if (id != null) {
             intent.putExtra(NOTE_MODE_EXTRA, OLD_NOTE)
