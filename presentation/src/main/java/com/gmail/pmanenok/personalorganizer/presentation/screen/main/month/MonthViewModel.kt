@@ -1,12 +1,13 @@
 package com.gmail.pmanenok.personalorganizer.presentation.screen.main.month
 
-import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
+import com.gmail.pmanenok.domain.entity.Notification
 import com.gmail.pmanenok.domain.usecases.date.GetSelectedDayUseCase
 import com.gmail.pmanenok.domain.usecases.date.RefreshSelectedDayUseCase
 import com.gmail.pmanenok.domain.usecases.date.UpdateSelectedDayUseCase
 import com.gmail.pmanenok.domain.usecases.note.GetNoteTypesUseCase
+import com.gmail.pmanenok.domain.usecases.notification.GetNotificationUseCase
 import com.gmail.pmanenok.personalorganizer.app.App
 import com.gmail.pmanenok.personalorganizer.presentation.base.BaseViewModel
 import com.gmail.pmanenok.personalorganizer.presentation.screen.main.MainRouter
@@ -26,11 +27,6 @@ class MonthViewModel : BaseViewModel<MainRouter>() {
         refreshSelectedDayUseCase.refresh()
         return@OnLongClickListener true
     }
-    /*var selectedDay : Long = 0L
-    set(value) {
-        field = value
-        adapter.setSelectedDay(value)
-    }*/
 
     @Inject
     public lateinit var getSelectedDayUseCase: GetSelectedDayUseCase
@@ -40,6 +36,8 @@ class MonthViewModel : BaseViewModel<MainRouter>() {
     public lateinit var updateSelectedDayUseCase: UpdateSelectedDayUseCase
     @Inject
     public lateinit var refreshSelectedDayUseCase: RefreshSelectedDayUseCase
+    @Inject
+    public lateinit var getNotificationUseCase: GetNotificationUseCase
 
     init {
         Log.e("MonthViewModel", "init")
@@ -54,7 +52,7 @@ class MonthViewModel : BaseViewModel<MainRouter>() {
                 router?.showError(it)
             }
         ))
-        /*val disposable = noteTypesUseCase.getAllNoteTypes()
+        addToDisposable(noteTypesUseCase.getAllNoteTypes()
             .subscribeBy(
                 onNext = {
                     Log.e("MonthViewModel", "adapter set ${it.size}")
@@ -63,13 +61,20 @@ class MonthViewModel : BaseViewModel<MainRouter>() {
                 onError = {
                     router?.showError(it)
                 }
-            )
-        addToDisposable(disposable)*/
+            ))
+        addToDisposable(getNotificationUseCase.get().subscribeBy(
+            onNext = {
+                Log.e("MonthViewModel", "init getNotificationUseCase $it")
+                if (it == Notification.DATABASE_CHANGED) getRecords()
+            },
+            onError = {
+                router?.showError(it)
+            }
+        ))
     }
 
-    fun refresh() {
-        Log.e("MonthViewModel", "refresh")
-        val disposable = noteTypesUseCase.getAllNoteTypes().take(1)
+    fun getRecords() {
+        val disposable = noteTypesUseCase.getAllNoteTypes()
             .subscribeBy(
                 onNext = {
                     Log.e("MonthViewModel", "adapter set ${it.size}")
@@ -80,7 +85,20 @@ class MonthViewModel : BaseViewModel<MainRouter>() {
                 }
             )
         addToDisposable(disposable)
-        Log.e("MonthViewModel", "refreshSelectedDayUseCase")
-        refreshSelectedDayUseCase.refresh()
+    }
+
+    fun refresh() {
+        Log.e("MonthViewModel", "refresh empty")
+        /*val disposable = noteTypesUseCase.getAllNoteTypes().take(1)
+            .subscribeBy(
+                onNext = {
+                    Log.e("MonthViewModel", "adapter set ${it.size}")
+                    adapter.setItems(it.toMutableMap())
+                },
+                onError = {
+                    router?.showError(it)
+                }
+            )
+        addToDisposable(disposable)*/
     }
 }

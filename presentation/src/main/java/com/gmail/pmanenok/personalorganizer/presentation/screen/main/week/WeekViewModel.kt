@@ -2,9 +2,11 @@ package com.gmail.pmanenok.personalorganizer.presentation.screen.main.week
 
 import android.databinding.ObservableField
 import android.util.Log
+import com.gmail.pmanenok.domain.entity.Notification
 import com.gmail.pmanenok.domain.usecases.date.GetSelectedDayUseCase
 import com.gmail.pmanenok.domain.usecases.date.UpdateSelectedDayUseCase
 import com.gmail.pmanenok.domain.usecases.note.GetNotesTitlesByDayRangeUseCase
+import com.gmail.pmanenok.domain.usecases.notification.GetNotificationUseCase
 import com.gmail.pmanenok.personalorganizer.app.App
 import com.gmail.pmanenok.personalorganizer.presentation.base.BaseViewModel
 import com.gmail.pmanenok.personalorganizer.presentation.screen.main.MainRouter
@@ -41,7 +43,8 @@ class WeekViewModel : BaseViewModel<MainRouter>() {
                 }
             ))
         }
-
+    @Inject
+    public lateinit var getNotificationUseCase: GetNotificationUseCase
     @Inject
     public lateinit var updateSelectedDayUseCase: UpdateSelectedDayUseCase
     @Inject
@@ -66,18 +69,16 @@ class WeekViewModel : BaseViewModel<MainRouter>() {
             onError = {
                 router?.showError(it)
             }
-        ))/*
-        Log.e("WeekViewModel", "before getNotesTitlesByDayRangeUseCase $weekBeginDay $weekEndDay")
-        addToDisposable(getNotesTitlesByDayRangeUseCase.getByDay(weekBeginDay, weekEndDay).subscribeBy(
+        ))
+        addToDisposable(getNotificationUseCase.get().subscribeBy(
             onNext = {
-                Log.e("WeekViewModel", "getNotesTitlesByDayRangeUseCase $weekBeginDay $weekEndDay")
-                adapter.cleanItems()
-                adapter.addItems(it)
+                Log.e("WeekViewModel", "init getNotificationUseCase $it")
+                if (it == Notification.DATABASE_CHANGED) getRecords()
             },
             onError = {
                 router?.showError(it)
             }
-        ))*/
+        ))
     }
 
     private fun countWeekRange(it: Long) {
@@ -93,8 +94,21 @@ class WeekViewModel : BaseViewModel<MainRouter>() {
         weekEndDay = calendar.timeInMillis
     }
 
+    fun getRecords() {
+        addToDisposable(getNotesTitlesByDayRangeUseCase.getByDay(weekBeginDay, weekEndDay).subscribeBy(
+            onNext = {
+                adapter.cleanItems()
+                adapter.addItems(it)
+                Log.e("WeekViewModel", "getRecords getNotesTitlesByDayRangeUseCase")
+            },
+            onError = {
+                router?.showError(it)
+            }
+        ))
+    }
+
     fun refresh() {
-        Log.e("WeekViewModel", "refresh")
+        Log.e("WeekViewModel", "refresh empty")
         /*if (weekBeginDay != 0L && weekEndDay != 0L)
             addToDisposable(getNotesTitlesByDayRangeUseCase.getByDay(weekBeginDay, weekEndDay).subscribeBy(
                 onNext = {

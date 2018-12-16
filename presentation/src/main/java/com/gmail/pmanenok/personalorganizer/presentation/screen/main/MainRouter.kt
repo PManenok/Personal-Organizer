@@ -1,6 +1,7 @@
 package com.gmail.pmanenok.personalorganizer.presentation.screen.main
 
 import android.content.Intent
+import android.util.Log
 import com.gmail.pmanenok.domain.entity.NoteType
 import com.gmail.pmanenok.personalorganizer.presentation.base.BaseRouter
 import com.gmail.pmanenok.personalorganizer.presentation.screen.note.NoteActivity
@@ -20,6 +21,7 @@ class MainRouter(activity: MainActivity) : BaseRouter<MainActivity>(activity) {
         id: String? = null,
         date: Long = 0L
     ) {
+        Log.e("MainRouter","goToNoteActivity $date")
         val intent = Intent(activity, NoteActivity::class.java)
         intent.putExtra(NOTE_DATE_EXTRA, date)
         intent.putExtra(NOTE_TYPE_EXTRA, noteType.name)

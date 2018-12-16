@@ -1,10 +1,12 @@
 package com.gmail.pmanenok.data.db.dao
 
 import android.arch.persistence.room.*
+import com.gmail.pmanenok.data.db.entity.*
 import com.gmail.pmanenok.data.db.entity.db.BirthdayDb
 import com.gmail.pmanenok.data.db.entity.db.ListDb
 import com.gmail.pmanenok.data.db.entity.db.NoteDb
 import com.gmail.pmanenok.data.db.entity.db.RecordDb
+import io.reactivex.Flowable
 
 
 @Dao

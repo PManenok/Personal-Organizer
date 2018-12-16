@@ -13,15 +13,6 @@ import com.gmail.pmanenok.personalorganizer.presentation.screen.note.NoteRouter
 import javax.inject.Inject
 
 class ListRecordViewModel : BaseViewModel<NoteRouter>() {
-    val title = ObservableField<String>()
-    val comment = ObservableField<String>()
-    var day: Long = 0L
-    val backOnClick = View.OnClickListener {
-        router?.goBack()
-    }
-    val notifyOnClick = View.OnClickListener {
-        //router?.showNotify()
-    }
     @Inject
     public lateinit var getRecordByIdUseCase: GetRecordByIdUseCase
     @Inject
@@ -33,5 +24,15 @@ class ListRecordViewModel : BaseViewModel<NoteRouter>() {
 
     init {
         App.appComponent.inject(this)
+    }
+
+    val title = ObservableField<String>()
+    val comment = ObservableField<String>()
+    var day: Long = 0L
+    val backOnClick = View.OnClickListener {
+        router?.goBack()
+    }
+    val notifyOnClick = View.OnClickListener {
+        //router?.showNotify()
     }
 }

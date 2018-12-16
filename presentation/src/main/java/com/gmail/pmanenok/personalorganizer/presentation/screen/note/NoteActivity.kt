@@ -15,9 +15,10 @@ class NoteActivity : BaseMvvmActivity<NoteViewModel, NoteRouter, ActivityNoteBin
         const val OLD_NOTE = "OLD_NOTE"
         const val NOTE_ID_EXTRA = "NOTE_ID_EXTRA"
         const val NOTE_DATE_EXTRA = "NOTE_DATE_EXTRA"
+        const val DEFAULT_DAY_LONG = 0L
     }
 
-    private var day: Long = 0L
+    private var day: Long = DEFAULT_DAY_LONG
     private var id: String? = null
     override fun prodiveViewModel(): NoteViewModel {
         return ViewModelProviders.of(this).get(NoteViewModel::class.java)
@@ -37,8 +38,8 @@ class NoteActivity : BaseMvvmActivity<NoteViewModel, NoteRouter, ActivityNoteBin
         val noteMode = intent.getStringExtra(NOTE_MODE_EXTRA)
         if (noteMode == OLD_NOTE) {
             id = intent.getStringExtra(NOTE_ID_EXTRA)
-            day = intent.getLongExtra(NOTE_DATE_EXTRA, 0L)
         }
+        day = intent.getLongExtra(NOTE_DATE_EXTRA, DEFAULT_DAY_LONG)
         when (noteType) {
             NoteType.TYPE_NOTE -> {
                 router.goToNoteRecord(id, day)
